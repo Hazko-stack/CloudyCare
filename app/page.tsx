@@ -37,7 +37,7 @@ export default function WeatherHealthApp() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
               <Menu className="w-6 h-6 text-gray-600 cursor-pointer" />
-              <h1 className="text-xl font-semibold text-gray-900 hidden sm:block">HealthWeather</h1>
+              <h1 className="text-xl font-semibold text-gray-900 hidden sm:block">CloudyCloud</h1>
             </div>
             
             <div className="flex items-center space-x-4">
@@ -59,7 +59,7 @@ export default function WeatherHealthApp() {
           
           {/* Welcome Section */}
           <div className="lg:col-span-3">
-            <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-6 text-white">
+            <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-2xl p-6 text-white">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
                 <div>
                   <h2 className="text-2xl sm:text-3xl font-bold mb-2">Selamat Pagi! </h2>
