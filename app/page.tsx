@@ -37,7 +37,7 @@ export default function WeatherHealthApp() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
               <Menu className="w-6 h-6 text-gray-600 cursor-pointer" />
-              <h1 className="text-xl font-semibold text-gray-900 hidden sm:block">CloudyCloud</h1>
+              <h1 className="text-xl font-semibold text-gray-900 hidden sm:block">CloudyCare</h1>
             </div>
             
             <div className="flex items-center space-x-4">
