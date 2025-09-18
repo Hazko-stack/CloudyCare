@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import { cityList } from '@/data/CityList'; // Import city list dari file terpisah
+import Image from 'next/image';
 
 const GuestWeatherPage = () => {
   const [weatherData, setWeatherData] = useState(null);
@@ -388,7 +389,7 @@ const GuestWeatherPage = () => {
                     key={index}
                     className="w-full flex-shrink-0 bg-white p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 flex items-center justify-center min-h-[120px] sm:min-h-[140px] md:min-h-[180px] lg:min-h-[200px] xl:min-h-[240px]"
                   >
-                    <img 
+                    <image
                       src={slide.image} 
                       alt={slide.alt}
                       className="max-w-full max-h-full object-contain rounded-lg shadow-md"
