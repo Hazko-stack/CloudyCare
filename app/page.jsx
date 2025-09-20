@@ -289,10 +289,10 @@ const GuestWeatherPage = () => {
   return (
     <div className="min-h-screen bg-white p-0 md:p-4 lg:p-8 relative">
       {/* Guest Banner */}
-      <div className="bg-blue-500 text-white p-3 text-center relative">
+      <div className="bg-black text-white p-3 text-center relative rounded-b-md">
         <div className="flex items-center justify-center space-x-2">
-          <span className="text-sm font-medium">👋 Welcome, Guest!</span>
-          <span className="text-xs opacity-75">Limited preview available</span>
+          <span className="text-sm font-medium">Welcome, Guest!</span>
+          <span className="text-xs opacity-75">Limited preview</span>
         </div>
         <button 
           onClick={() => window.location.href = '/login'}
@@ -356,7 +356,7 @@ const GuestWeatherPage = () => {
               </svg>
               <span className="text-sm md:text-base lg:text-base font-medium">{getCurrentCityName()}</span>
             </div>
-            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-medium mb-1 text-gray-800">Hello, good morning 👋</h1>
+            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-medium mb-1 text-gray-800">Hello, good morning </h1>
             <p className="text-sm md:text-base lg:text-lg text-gray-500 mb-2">Today, {dateString}</p>
             <p className="text-xs text-orange-600 font-medium">🔒 Guest Preview - Sign in for full access</p>
             
@@ -404,8 +404,8 @@ const GuestWeatherPage = () => {
                 ))}
               </div>
               
-              {/* Navigation Buttons - Better tablet size */}
-              <button 
+              {/* Navigation Buttons */}
+              {/* <button 
                 onClick={prevSlide}
                 className="absolute left-1 sm:left-2 md:left-3 lg:left-4 xl:left-6 top-1/2 transform -translate-y-1/2 bg-black/20 hover:bg-black/30 rounded-full p-1.5 sm:p-2 md:p-3 lg:p-4 xl:p-5 text-white backdrop-blur-sm transition-all duration-200 shadow-sm"
               >
@@ -421,10 +421,10 @@ const GuestWeatherPage = () => {
                 <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 xl:w-7 xl:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
-              </button>
+              </button> */}
               
-              {/* Dots Indicator - Better tablet size */}
-              <div className="absolute bottom-2 sm:bottom-3 md:bottom-4 lg:bottom-6 xl:bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-1.5 sm:space-x-2 md:space-x-2.5 lg:space-x-3">
+              {/* Dots Indicator */}
+              {/* <div className="absolute bottom-2 sm:bottom-3 md:bottom-4 lg:bottom-6 xl:bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-1.5 sm:space-x-2 md:space-x-2.5 lg:space-x-3">
                 {exerciseSlides.map((_, index) => (
                   <button
                     key={index}
@@ -434,7 +434,7 @@ const GuestWeatherPage = () => {
                     }`}
                   />
                 ))}
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -523,7 +523,7 @@ const GuestWeatherPage = () => {
                 </p>
                 <button 
                   onClick={() => window.location.href = '/login'}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-all transform hover:scale-105"
+                  className="bg-black text-white px-6 py-3 rounded-lg font-medium transition-all transform hover:scale-105"
                 >
                   Sign Up Free
                 </button>
