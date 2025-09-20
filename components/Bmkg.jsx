@@ -1,7 +1,8 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
-import { cityList } from '@/data/CityList'; // Import city list dari file terpisah
+import Image from 'next/image';
 
+import { cityList } from '@/data/CityList';
 const Bmkg  = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -10,7 +11,6 @@ const Bmkg  = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const chartRef = useRef(null);
 
-  // Data slide untuk gambar saja
   const exerciseSlides = [
     {
       image: "/construction/meme1.jpg",
@@ -26,7 +26,7 @@ const Bmkg  = () => {
     }
   ];
 
-  // Fungsi untuk fetch data
+  // fetch data
   const fetchData = async () => {
     setLoading(true);
     setError(null);
@@ -316,10 +316,12 @@ const Bmkg  = () => {
                     key={index}
                     className="w-full flex-shrink-0 bg-white p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 flex items-center justify-center min-h-[120px] sm:min-h-[140px] md:min-h-[180px] lg:min-h-[200px] xl:min-h-[240px]"
                   >
-                    {/* Gambar dari public folder */}
-                    <image
+                    {/* Fixed: Changed from <image> to <Image> and added proper Next.js Image props */}
+                    <Image
                       src={slide.image} 
                       alt={slide.alt}
+                      width={300}
+                      height={200}
                       className="max-w-full max-h-full object-contain rounded-lg shadow-md"
                       onError={(e) => {
                         // Fallback jika gambar tidak ditemukan
