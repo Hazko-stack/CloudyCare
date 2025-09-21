@@ -3,9 +3,8 @@ import Image from 'next/image'
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-black flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-sm mx-auto">
-
         {/* Main Card */}
         <div className="bg-white rounded-3xl overflow-hidden shadow-2xl">
           {/* Header Image Section */}
@@ -31,7 +30,7 @@ export default function LoginPage() {
           {/* Form Section */}
           <div className="px-8 py-10">
             <h2 className="text-2xl font-bold text-gray-900 text-center mb-12 tracking-wide">
-              Let's Connect with Us!
+              Let&apos;s Connect with Us!
             </h2>
 
             <form className="space-y-8">
