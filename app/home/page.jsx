@@ -68,7 +68,7 @@ export default function HomePage() {
 
   return (
     <React.Fragment>
-      <main className="relative">
+      <main className="relative pb-20">
         {/* User Header */}
         <div className="bg-black text-white p-3 flex justify-between items-center">
           <div className="flex items-center space-x-3">

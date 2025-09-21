@@ -7,16 +7,16 @@ const ExerciseSelectionPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const exercises = [
-    { id: 1, name: "Morning Yoga", category: "recommend", image: "/construction/meme1.jpg" },
-    { id: 2, name: "HIIT Workout", category: "recommend", image: "/construction/meme1.jpg" },
-    { id: 3, name: "Pilates", category: "recommend", image: "/construction/meme1.jpg" },
-    { id: 4, name: "Strength Training", category: "popular", image: "/construction/meme1.jpg" },
-    { id: 5, name: "Cardio Blast", category: "popular", image: "/construction/meme1.jpg" },
-    { id: 6, name: "Stretching", category: "popular", image: "/construction/meme1.jpg" },
-    { id: 7, name: "Core Workout", category: "popular", image: "/construction/meme1.jpg" },
-    { id: 8, name: "Dance Fitness", category: "popular", image: "/construction/meme1.jpg" },
-    { id: 9, name: "Boxing", category: "popular", image: "/construction/meme1.jpg" },
-    { id: 10, name: "Running", category: "popular", image: "/construction/meme1.jpg" },
+    { id: 1, name: "Morning Yoga", category: "recommend", image: "https://cdn.pixabay.com/animation/2024/07/07/06/32/06-32-15-378_512.gif" },
+    { id: 2, name: "Treadmill", category: "recommend", image: "https://cdn.pixabay.com/animation/2024/07/07/06/31/06-31-28-535_512.gif" },
+    { id: 3, name: "Pilates", category: "recommend", image: "https://cdn.pixabay.com/animation/2024/07/07/06/32/06-32-28-251_512.gif" },
+    { id: 4, name: "Strength Training", category: "popular", image: "https://cdn.pixabay.com/animation/2024/07/07/06/32/06-32-41-935_512.gif" },
+    { id: 5, name: "Cardio Blast", category: "popular", image: "https://cdn.pixabay.com/animation/2024/07/07/06/31/06-31-28-535_512.gif" },
+    { id: 6, name: "Stretching", category: "popular", image: "https://cdn.pixabay.com/animation/2024/07/07/06/32/06-32-15-378_512.gif" },
+    { id: 7, name: "Core Workout", category: "popular", image: "https://cdn.pixabay.com/animation/2024/07/07/06/32/06-32-28-251_512.gif" },
+    { id: 8, name: "Pull up", category: "popular", image: "https://cdn.pixabay.com/animation/2024/07/07/07/05/07-05-11-50_512.gif" },
+    { id: 9, name: "Boxing", category: "popular", image: "https://cdn.pixabay.com/animation/2024/07/07/06/32/06-32-41-935_512.gif" },
+    { id: 10, name: "Running", category: "popular", image: "https://cdn.pixabay.com/animation/2024/07/07/06/32/06-32-41-935_512.gif" },
   ];
 
   // Filter exercises based on search query
@@ -27,12 +27,13 @@ const ExerciseSelectionPage = () => {
   const recommendedExercises = filteredExercises.filter(ex => ex.category === "recommend");
   const popularExercises = filteredExercises.filter(ex => ex.category === "popular");
 
-  // Simple Exercise Card Component
+  // Responsive Exercise Card Component
   const ExerciseCard = ({ exercise }) => (
     <div
       onClick={() => setSelectedExercise(exercise.id)}
       className={`
-        w-40 h-40 
+        w-[calc(50%-8px)] sm:w-40 md:w-44 lg:w-48
+        h-36 sm:h-40 md:h-44 lg:h-48
         bg-gray-200 
         rounded-lg 
         cursor-pointer 
@@ -42,19 +43,20 @@ const ExerciseSelectionPage = () => {
       `}
     >
       {/* Image Area dengan warna berbeda per workout */}
-      <div className="w-full h-32 bg-gradient-to-br from-purple-300 to-pink-400 flex items-center justify-center">
+      <div className="w-full h-28 sm:h-32 md:h-36 lg:h-40 bg-gradient-to-br from-purple-300 to-pink-400 flex items-center justify-center">
         <Image
           src={exercise.image}
           alt={exercise.name}
-          width={96}
-          height={96}
+          width={80}
+          height={80}
           className="object-cover rounded"
+          unoptimized={true}
         />
       </div>
       
       {/* Text Area */}
       <div className="h-8 flex items-center justify-center bg-white">
-        <p className="text-xs font-medium text-gray-800 text-center px-2">
+        <p className="text-xs font-medium text-gray-800 text-center px-2 leading-tight">
           {exercise.name}
         </p>
       </div>
@@ -62,7 +64,7 @@ const ExerciseSelectionPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
+    <div className="min-h-screen bg-gray-100 p-4 pb-20">
       {/* Enhanced Header with Search */}
       <div className="mb-6">
         <div className="flex items-center space-x-4 mb-4">
@@ -74,7 +76,7 @@ const ExerciseSelectionPage = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
             Select Your Workout
           </h1>
         </div>
@@ -163,33 +165,34 @@ const ExerciseSelectionPage = () => {
 
       {/* Enhanced Bottom Sheet */}
       {selectedExercise && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 shadow-lg">
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 shadow-lg z-50">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-12 h-12 bg-gradient-to-br from-purple-300 to-pink-400 rounded-lg flex items-center justify-center overflow-hidden">
                 <Image
-                  src={exercises.find(ex => ex.id === selectedExercise)?.image || "/construction/meme1.jpg"}
+                  src={exercises.find(ex => ex.id === selectedExercise)?.image || "https://cdn.pixabay.com/animation/2024/07/07/06/32/06-32-28-251_512.gif"}
                   alt="Selected exercise"
                   width={40}
                   height={40}
                   className="object-cover rounded"
+                  unoptimized={true}
                 />
               </div>
               <div>
-                <span className="font-medium">
+                <span className="font-medium text-sm sm:text-base">
                   {exercises.find(ex => ex.id === selectedExercise)?.name}
                 </span>
-                <p className="text-sm text-gray-500">Selected workout</p>
+                <p className="text-xs sm:text-sm text-gray-500">Selected workout</p>
               </div>
             </div>
             <div className="flex gap-2">
               <button 
                 onClick={() => setSelectedExercise(null)}
-                className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="px-3 sm:px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
               >
                 Cancel
               </button>
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors">
+              <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 rounded-lg transition-colors text-sm">
                 Start Workout
               </button>
             </div>

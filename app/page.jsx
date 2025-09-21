@@ -358,7 +358,13 @@ const GuestWeatherPage = () => {
             </div>
             <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-medium mb-1 text-gray-800">Hello, good morning </h1>
             <p className="text-sm md:text-base lg:text-lg text-gray-500 mb-2">Today, {dateString}</p>
-            <p className="text-xs text-orange-600 font-medium">🔒 Guest Preview - Sign in for full access</p>
+            
+            {/* Guest limitation text - Better mobile positioning */}
+            <div className="bg-orange-50 border border-orange-200 rounded-lg px-3 py-2 mb-4">
+              <p className="text-xs sm:text-sm text-orange-700 font-medium text-center">
+                🔒 Guest Preview - Limited to {GUEST_FORECAST_LIMIT} hours forecast
+              </p>
+            </div>
             
             {/* Temperature di pojok kiri dengan bold */}
             {currentWeather && (
@@ -403,50 +409,22 @@ const GuestWeatherPage = () => {
                   </div>
                 ))}
               </div>
-              
-              {/* Navigation Buttons */}
-              {/* <button 
-                onClick={prevSlide}
-                className="absolute left-1 sm:left-2 md:left-3 lg:left-4 xl:left-6 top-1/2 transform -translate-y-1/2 bg-black/20 hover:bg-black/30 rounded-full p-1.5 sm:p-2 md:p-3 lg:p-4 xl:p-5 text-white backdrop-blur-sm transition-all duration-200 shadow-sm"
-              >
-                <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 xl:w-7 xl:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              
-              <button 
-                onClick={nextSlide}
-                className="absolute right-1 sm:right-2 md:right-3 lg:right-4 xl:right-6 top-1/2 transform -translate-y-1/2 bg-black/20 hover:bg-black/30 rounded-full p-1.5 sm:p-2 md:p-3 lg:p-4 xl:p-5 text-white backdrop-blur-sm transition-all duration-200 shadow-sm"
-              >
-                <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 xl:w-7 xl:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button> */}
-              
-              {/* Dots Indicator */}
-              {/* <div className="absolute bottom-2 sm:bottom-3 md:bottom-4 lg:bottom-6 xl:bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-1.5 sm:space-x-2 md:space-x-2.5 lg:space-x-3">
-                {exerciseSlides.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentSlide(index)}
-                    className={`w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-3 md:h-3 lg:w-4 lg:h-4 xl:w-5 xl:h-5 rounded-full transition-colors ${
-                      index === currentSlide ? 'bg-gray-700' : 'bg-gray-400'
-                    }`}
-                  />
-                ))}
-              </div> */}
             </div>
           </div>
 
-          {/* Weather Chart - Limited for Guest */}
+          {/* Weather Chart Section - Fixed overlay positioning */}
           <div className="mb-6 md:mb-8 lg:mb-10">
-            <div className="bg-white rounded-2xl lg:rounded-3xl p-4 sm:p-6 md:p-8 shadow-lg border border-gray-100 relative">
+            {/* Chart title and limitation info - Better mobile layout */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
+              <h3 className="text-lg md:text-xl font-semibold text-gray-800">Weather Forecast Chart</h3>
+              <div className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap">
+                Guest: {GUEST_FORECAST_LIMIT}h only
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-2xl lg:rounded-3xl p-4 sm:p-6 md:p-8 shadow-lg border border-gray-100">
               <div className="h-64 sm:h-80 md:h-96">
                 <canvas ref={chartRef} className="w-full h-full"></canvas>
-              </div>
-              {/* Overlay for guest limitation */}
-              <div className="absolute top-4 right-4 bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-xs font-medium">
-                Limited to {GUEST_FORECAST_LIMIT}h forecast
               </div>
             </div>
           </div>
