@@ -1,9 +1,9 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 
-const WorkoutPage = () => {
+const WorkoutContent = () => {
   const searchParams = useSearchParams();
   const [currentExercise, setCurrentExercise] = useState(null);
   const [isOverlayVisible, setIsOverlayVisible] = useState(true);
@@ -135,6 +135,18 @@ const WorkoutPage = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const WorkoutPage = () => {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <p className="text-gray-600">Loading workout...</p>
+      </div>
+    }>
+      <WorkoutContent />
+    </Suspense>
   );
 };
 
