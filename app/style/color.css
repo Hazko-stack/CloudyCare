@@ -1,0 +1,33 @@
+:root {
+  --color-primary-50: #f5faff;
+  --color-primary-100: #e0f2ff;
+  --color-primary-200: #b3e5fc;
+  --color-primary-300: #81d4fa;
+  --color-primary-400: #4fc3f7;
+  --color-primary-500: #29b6f6;
+  --color-primary-600: #039be5;
+  --color-primary-700: #0288d1;
+  --color-primary-800: #0277bd;
+  --color-primary-900: #01579b;
+
+  --color-secondary-50: #fff8e1;
+  --color-secondary-100: #ffecb3;
+  --color-secondary-200: #ffe082;
+  --color-secondary-300: #ffd54f;
+  --color-secondary-400: #ffca28;
+  --color-secondary-500: #ffc107;
+  --color-secondary-600: #ffb300;
+  --color-secondary-700: #ffa000;
+  --color-secondary-800: #ff8f00;
+  --color-secondary-900: #ff6f00;
+
+  --color-background: #ffffff;
+  --color-background-secondary: #f4f4f4;
+  --color-foreground: #222222;
+  --color-foreground-secondary: #555555;
+  --color-border: #e5e7eb;
+  --color-border-secondary: #cbd5e1;
+
+  --font-poppins: 'Poppins', system-ui, sans-serif;
+  --font-geist-mono: 'Geist Mono', monospace;
+}
