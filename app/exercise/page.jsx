@@ -1,10 +1,12 @@
 "use client";
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const ExerciseSelectionPage = () => {
   const [selectedExercise, setSelectedExercise] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const router = useRouter();
 
   const exercises = [
     { id: 1, name: "Morning Yoga", category: "recommend", image: "https://cdn.pixabay.com/animation/2024/07/07/06/32/06-32-15-378_512.gif" },
@@ -192,7 +194,14 @@ const ExerciseSelectionPage = () => {
               >
                 Cancel
               </button>
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 rounded-lg transition-colors text-sm">
+              <button 
+                onClick={() => {
+                  const exerciseName = exercises.find(ex => ex.id === selectedExercise)?.name || '';
+                  const encodedName = encodeURIComponent(exerciseName.toLowerCase().replace(/\s+/g, '-'));
+                  router.push(`/workout?exercise=${encodedName}`);
+                }}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 rounded-lg transition-colors text-sm"
+              >
                 Start Workout
               </button>
             </div>
