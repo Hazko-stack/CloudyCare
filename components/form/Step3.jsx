@@ -21,7 +21,6 @@ export default function Step3() {
       </h2>
 
       <div className="space-y-4">
-        {/* Asma */}
         <label className="flex items-center space-x-2">
           <input
             type="radio"
@@ -34,7 +33,6 @@ export default function Step3() {
           <span>Asma</span>
         </label>
 
-        {/* Hipertensi */}
         <label className="flex items-center space-x-2">
           <input
             type="radio"
@@ -47,7 +45,6 @@ export default function Step3() {
           <span>Hipertensi</span>
         </label>
 
-        {/* Alergi */}
         <label className="flex items-center space-x-2">
           <input
             type="radio"
@@ -61,7 +58,6 @@ export default function Step3() {
         </label>
       </div>
 
-      {/* Lainnya */}
       <div className="mt-6">
         <p className="mb-2">Lainnya :</p>
         <input
