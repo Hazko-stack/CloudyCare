@@ -3,7 +3,6 @@ import { useState } from "react";
 import Image from "next/image";
 
 export default function Step2() {
-  const [gender, setGender] = useState("");
 
   return (
     <div className="text-left w-full">
