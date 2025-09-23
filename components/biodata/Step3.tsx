@@ -1,10 +1,19 @@
-"use client";
-import { useState } from "react";
-import Image from "next/image";
+"use client"
+import { useState, useEffect } from "react"
+import Image from "next/image"
+import { StepProps } from "@/component/types/biodata"
 
-export default function Step3() {
-  const [history, setHistory] = useState("");
-  const [other, setOther] = useState("");
+export default function Step3({ formState, updateFormState }: StepProps) {
+  const [history, setHistory] = useState(formState.medical_history || "")
+  const [other, setOther] = useState(formState.other_medical_history || "")
+
+  // Update parent form state when local state changes
+  useEffect(() => {
+    updateFormState({
+      medical_history: history,
+      other_medical_history: other
+    })
+  }, [history, other, updateFormState])
 
   return (
     <div className="text-left w-full">
@@ -21,11 +30,9 @@ export default function Step3() {
       </h2>
 
       <div className="space-y-4">
-        {/* Asma */}
         <label className="flex items-center space-x-2">
           <input
             type="radio"
-            name="history"
             value="asma"
             checked={history === "asma"}
             onChange={(e) => setHistory(e.target.value)}
@@ -34,11 +41,9 @@ export default function Step3() {
           <span>Asma</span>
         </label>
 
-        {/* Hipertensi */}
         <label className="flex items-center space-x-2">
           <input
             type="radio"
-            name="history"
             value="hipertensi"
             checked={history === "hipertensi"}
             onChange={(e) => setHistory(e.target.value)}
@@ -47,11 +52,9 @@ export default function Step3() {
           <span>Hipertensi</span>
         </label>
 
-        {/* Alergi */}
         <label className="flex items-center space-x-2">
           <input
             type="radio"
-            name="history"
             value="alergi"
             checked={history === "alergi"}
             onChange={(e) => setHistory(e.target.value)}
@@ -59,11 +62,21 @@ export default function Step3() {
           />
           <span>Alergi</span>
         </label>
+
+        <label className="flex items-center space-x-2">
+          <input
+            type="radio"
+            value="tidak_ada"
+            checked={history === "tidak_ada"}
+            onChange={(e) => setHistory(e.target.value)}
+            className="w-5 h-5 text-yellow-400 focus:ring-yellow-400"
+          />
+          <span>Tidak ada</span>
+        </label>
       </div>
 
-      {/* Lainnya */}
       <div className="mt-6">
-        <p className="mb-2">Lainnya :</p>
+        <p className="mb-2">Lainnya:</p>
         <input
           type="text"
           value={other}
@@ -73,5 +86,5 @@ export default function Step3() {
         />
       </div>
     </div>
-  );
+  )
 }

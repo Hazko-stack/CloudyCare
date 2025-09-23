@@ -1,15 +1,27 @@
-"use client";
-import { useState } from "react";
-import Image from "next/image";
+"use client"
+import { useState, useEffect } from "react"
+import Image from "next/image"
+import { StepProps } from "@/component/types/biodata"
 
-export default function Step1() {
-  const [gender, setGender] = useState("");
+export default function Step1({ formState, updateFormState }: StepProps) {
+  const [fullName, setFullName] = useState(formState.full_name || "")
+  const [age, setAge] = useState(formState.age || "")
+  const [gender, setGender] = useState(formState.gender || "")
+
+  // Update parent form state when local state changes
+  useEffect(() => {
+    updateFormState({
+      full_name: fullName,
+      age: age,
+      gender: gender
+    })
+  }, [fullName, age, gender, updateFormState])
 
   const options = [
     { label: "Perempuan 👧", value: "female" },
     { label: "Laki-laki 👦", value: "male" },
     { label: "Lainnya", value: "other" },
-  ];
+  ]
 
   return (
     <div className="text-left w-full">
@@ -27,19 +39,24 @@ export default function Step1() {
       <input
         type="text"
         placeholder="Tulis nama lengkap"
+        value={fullName}
+        onChange={(e) => setFullName(e.target.value)}
         className="w-full border-b border-gray-300 focus:outline-none focus:border-yellow-400 py-2 mb-6"
       />
 
       <p className="text-gray-700 mb-1">Berapa umur kamu?</p>
-
       <input
         type="number"
         placeholder="Tulis umur kamu"
+        value={age}
+        onChange={(e) => setAge(e.target.value)}
+        min="1"
+        max="100"
         className="w-full border-b border-gray-300 focus:outline-none focus:border-yellow-400 py-2 mb-6"
       />
 
       <p className="text-gray-600 mb-2">Apa jenis kelamin kamu?</p>
-      <div className="flex space-x-3 ">
+      <div className="flex space-x-3">
         {options.map((opt) => (
           <label
             key={opt.value}
@@ -51,9 +68,9 @@ export default function Step1() {
           >
             <input
               type="radio"
-              name="gender"
               value={opt.value}
               className="hidden"
+              checked={gender === opt.value}
               onChange={(e) => setGender(e.target.value)}
             />
             {opt.label}
@@ -61,5 +78,5 @@ export default function Step1() {
         ))}
       </div>
     </div>
-  );
+  )
 }
