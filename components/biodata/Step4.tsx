@@ -1,10 +1,24 @@
-"use client";
-import { useState } from "react";
-import Image from "next/image";
+"use client"
+import { useState, useEffect } from "react"
+import Image from "next/image"
 
-export default function Step4() {
-  const [workout, setWorkout] = useState("");
-  const [other, setOther] = useState("");
+interface Step4Props {
+  existingData?: any
+  formState: any
+  updateFormState: (updates: any) => void
+}
+
+export default function Step4({ existingData, formState, updateFormState }: Step4Props) {
+  const [workout, setWorkout] = useState(formState.workout_frequency || "")
+  const [other, setOther] = useState(formState.other_workout_info || "")
+
+  // Update parent form state when local state changes
+  useEffect(() => {
+    updateFormState({
+      workout_frequency: workout,
+      other_workout_info: other
+    })
+  }, [workout, other, updateFormState])
 
   return (
     <div className="text-left w-full">
@@ -22,7 +36,6 @@ export default function Step4() {
         <label className="flex items-center space-x-2">
           <input
             type="radio"
-            name="workout"
             value="jarang"
             checked={workout === "jarang"}
             onChange={(e) => setWorkout(e.target.value)}
@@ -34,7 +47,6 @@ export default function Step4() {
         <label className="flex items-center space-x-2">
           <input
             type="radio"
-            name="workout"
             value="2days"
             checked={workout === "2days"}
             onChange={(e) => setWorkout(e.target.value)}
@@ -46,29 +58,36 @@ export default function Step4() {
         <label className="flex items-center space-x-2">
           <input
             type="radio"
-            name="workout"
             value="weekly"
             checked={workout === "weekly"}
             onChange={(e) => setWorkout(e.target.value)}
             className="w-5 h-5 text-yellow-400 focus:ring-yellow-400"
           />
-          <span>Setiap seminggy sekali</span>
+          <span>Setiap seminggu sekali</span>
         </label>
 
-        
+        <label className="flex items-center space-x-2">
+          <input
+            type="radio"
+            value="daily"
+            checked={workout === "daily"}
+            onChange={(e) => setWorkout(e.target.value)}
+            className="w-5 h-5 text-yellow-400 focus:ring-yellow-400"
+          />
+          <span>Setiap hari</span>
+        </label>
       </div>
 
       <div className="mt-6">
-        <p className="mb-2">Lainnya :</p>
+        <p className="mb-2">Lainnya:</p>
         <input
           type="text"
           value={other}
           onChange={(e) => setOther(e.target.value)}
-          placeholder=""
+          placeholder="Contoh: Yoga 3x seminggu"
           className="w-full border-b border-gray-300 focus:outline-none focus:border-yellow-400 py-2"
         />
       </div>
-
     </div>
-  );
+  )
 }

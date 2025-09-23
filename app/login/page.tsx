@@ -7,24 +7,15 @@ export default function LoginPage() {
       <div className="w-full max-w-sm mx-auto">
         {/* Main Card */}
         <div className="bg-white rounded-3xl overflow-hidden shadow-2xl">
-          {/* Header Image Section */}
-          <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-            <div className="relative">
-              <Image
-                src="/logo.png"
-                alt="CloudCare"
-                width={160}
-                height={100}
-                className="object-contain filter drop-shadow-lg"
-                priority
-              />
-              {/* Subtle overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent rounded-lg"></div>
-            </div>
-            {/* Decorative elements */}
-            <div className="absolute top-4 left-4 w-3 h-3 bg-white/20 rounded-full"></div>
-            <div className="absolute bottom-6 right-6 w-2 h-2 bg-white/30 rounded-full"></div>
-            <div className="absolute top-8 right-8 w-1 h-1 bg-white/40 rounded-full"></div>
+          {/* Full Image Header Section */}
+          <div className="relative h-48 overflow-hidden">
+            <Image
+              src="/construction/meme2.jpg"
+              alt="Header Image"
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
 
           {/* Form Section */}
