@@ -45,7 +45,7 @@ export default async function BiodataPage({ searchParams }: BiodataPageProps) {
         )}
 
         {/* Form */}
-        <BiodataForm existingData={existingBiodata} />
+        <BiodataForm existingData={existingBiodata ?? undefined} />
       </div>
     </div>
   )

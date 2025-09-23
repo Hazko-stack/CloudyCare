@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
+import { BiodataType } from '@/component/types/biodata'
 
 export async function saveBiodata(formData: FormData) {
   console.log('=== SAVE BIODATA STARTED ===')
@@ -82,7 +83,7 @@ export async function saveBiodata(formData: FormData) {
   redirect('/home?success=Biodata berhasil disimpan')
 }
 
-export async function getBiodata(): Promise<any | null> {
+export async function getBiodata(): Promise<BiodataType | null> {
   console.log('=== GET BIODATA STARTED ===')
   
   const supabase = await createClient()

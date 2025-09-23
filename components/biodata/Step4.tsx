@@ -1,14 +1,9 @@
 "use client"
 import { useState, useEffect } from "react"
 import Image from "next/image"
+import { StepProps } from "@/component/types/biodata"
 
-interface Step4Props {
-  existingData?: any
-  formState: any
-  updateFormState: (updates: any) => void
-}
-
-export default function Step4({ existingData, formState, updateFormState }: Step4Props) {
+export default function Step4({ formState, updateFormState }: StepProps) {
   const [workout, setWorkout] = useState(formState.workout_frequency || "")
   const [other, setOther] = useState(formState.other_workout_info || "")
 

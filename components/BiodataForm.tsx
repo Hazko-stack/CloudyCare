@@ -7,30 +7,10 @@ import Step3 from './biodata/Step3'
 import Step4 from './biodata/Step4'
 import Step5 from './biodata/Step5'
 import { saveBiodata } from '@/app/biodata/actions'
+import { BiodataType, FormState } from '@/component/types/biodata'
 
 interface BiodataFormProps {
-  existingData?: any
-}
-
-interface FormState {
-  // Step 1
-  full_name: string
-  age: string
-  gender: string
-  // Step 2
-  weight: string
-  height: string
-  // Step 3
-  medical_history: string
-  other_medical_history: string
-  // Step 4
-  workout_frequency: string
-  other_workout_info: string
-  // Step 5
-  location_name: string
-  location_adm4: string
-  latitude: string
-  longitude: string
+  existingData?: BiodataType
 }
 
 export default function BiodataForm({ existingData }: BiodataFormProps) {
@@ -47,7 +27,7 @@ export default function BiodataForm({ existingData }: BiodataFormProps) {
     weight: existingData?.weight?.toString() || '',
     height: existingData?.height?.toString() || '',
     // Step 3
-    medical_history: existingData?.medical_history?.[0] || '',
+    medical_history: existingData?.medical_history || '',
     other_medical_history: existingData?.other_medical_history || '',
     // Step 4
     workout_frequency: existingData?.workout_frequency || '',
@@ -95,7 +75,7 @@ export default function BiodataForm({ existingData }: BiodataFormProps) {
     }
   }
 
-  const handleSubmit = async (formData: FormData) => {
+  const handleSubmit = async () => {
     console.log('Form submitting with state:', formState)
     setIsSubmitting(true)
     
@@ -118,7 +98,7 @@ export default function BiodataForm({ existingData }: BiodataFormProps) {
     completeFormData.append('longitude', formState.longitude)
     
     console.log('Complete FormData entries:')
-    for (let [key, value] of completeFormData.entries()) {
+    for (const [key, value] of completeFormData.entries()) {
       console.log(key, value)
     }
     

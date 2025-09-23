@@ -2,21 +2,14 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import { cityList } from "@/data/CityList"
+import { StepProps, CityData } from "@/component/types/biodata"
 
-interface Step5Props {
-  existingData?: any
-  formState: any
-  updateFormState: (updates: any) => void
-}
-
-export default function Step5({ existingData, formState, updateFormState }: Step5Props) {
+export default function Step5({ formState, updateFormState }: StepProps) {
   const [searchQuery, setSearchQuery] = useState(formState.location_name || "")
-  const [selectedLocation, setSelectedLocation] = useState<any>(
+  const [selectedLocation, setSelectedLocation] = useState<CityData | null>(
     formState.location_name ? {
       name: formState.location_name,
       adm4: formState.location_adm4,
-      lat: formState.latitude,
-      lon: formState.longitude
     } : null
   )
   const [showDropdown, setShowDropdown] = useState(false)
@@ -26,8 +19,8 @@ export default function Step5({ existingData, formState, updateFormState }: Step
     updateFormState({
       location_name: selectedLocation?.name || '',
       location_adm4: selectedLocation?.adm4 || '',
-      latitude: selectedLocation?.lat || '',
-      longitude: selectedLocation?.lon || ''
+      latitude: '',
+      longitude: ''
     })
   }, [selectedLocation, updateFormState])
 
@@ -35,7 +28,7 @@ export default function Step5({ existingData, formState, updateFormState }: Step
     location.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
-  const handleLocationSelect = (location: any) => {
+  const handleLocationSelect = (location: CityData) => {
     setSelectedLocation(location)
     setSearchQuery(location.name)
     setShowDropdown(false)
@@ -46,44 +39,6 @@ export default function Step5({ existingData, formState, updateFormState }: Step
     setShowDropdown(true)
     if (e.target.value === '') {
       setSelectedLocation(null)
-    }
-  }
-
-  const handleGetCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords
-          
-          let detectedCity = "Lokasi Saat Ini"
-          let selectedFromList = cityList[0]
-          
-          // Simple location detection berdasarkan koordinat Indonesia
-          if (latitude >= -6.5 && latitude <= -5.5 && longitude >= 106 && longitude <= 107.5) {
-            detectedCity = "Jakarta"
-            selectedFromList = cityList.find(city => city.name.includes('Jakarta')) || cityList[0]
-          } else if (latitude >= -7.5 && latitude <= -6.5 && longitude >= 107 && longitude <= 108) {
-            detectedCity = "Bandung"
-            selectedFromList = cityList.find(city => city.name.includes('Bandung')) || cityList[0]
-          } else if (latitude >= -7.5 && latitude <= -6.5 && longitude >= 110 && longitude <= 111) {
-            detectedCity = "Semarang"
-            selectedFromList = cityList.find(city => city.name.includes('Semarang')) || cityList[0]
-          }
-
-          handleLocationSelect({
-            name: `${selectedFromList.name} (Lokasi Terdeteksi: ${detectedCity})`,
-            adm4: selectedFromList.adm4,
-            lat: latitude.toString(),
-            lon: longitude.toString()
-          })
-        },
-        (error) => {
-          console.error("Error getting location:", error)
-          alert("Tidak dapat mengakses lokasi. Silakan pilih manual.")
-        }
-      )
-    } else {
-      alert("Geolocation tidak didukung di browser ini.")
     }
   }
 
@@ -101,7 +56,7 @@ export default function Step5({ existingData, formState, updateFormState }: Step
         🌍 Biar lebih akurat, pilih lokasi kamu
       </h2>
 
-      <div className="text-center text-gray-500 mb-4">atau</div>
+      <div className="text-center text-gray-500 mb-4">Pilih lokasi</div>
 
       {/* Search Input */}
       <div className="relative max-w-md">
@@ -159,7 +114,7 @@ export default function Step5({ existingData, formState, updateFormState }: Step
       {showDropdown && searchQuery && filteredLocation.length === 0 && (
         <div className="mt-2 max-w-md bg-white border border-gray-300 rounded-lg shadow-lg p-4">
           <div className="text-gray-500 text-center">
-            Tidak ditemukan lokasi "{searchQuery}"
+            Tidak ditemukan lokasi &ldquo;{searchQuery}&rdquo;
           </div>
         </div>
       )}

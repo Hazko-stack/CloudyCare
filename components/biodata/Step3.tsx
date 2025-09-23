@@ -1,14 +1,9 @@
 "use client"
 import { useState, useEffect } from "react"
 import Image from "next/image"
+import { StepProps } from "@/component/types/biodata"
 
-interface Step3Props {
-  existingData?: any
-  formState: any
-  updateFormState: (updates: any) => void
-}
-
-export default function Step3({ existingData, formState, updateFormState }: Step3Props) {
+export default function Step3({ formState, updateFormState }: StepProps) {
   const [history, setHistory] = useState(formState.medical_history || "")
   const [other, setOther] = useState(formState.other_medical_history || "")
 
