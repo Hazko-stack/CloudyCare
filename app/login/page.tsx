@@ -3,17 +3,17 @@ import Image from 'next/image'
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-sm mx-auto">
-        {/* Main Card */}
-        <div className="bg-white rounded-3xl overflow-hidden shadow-2xl">
-          {/* Full Image Header Section */}
-          <div className="relative h-48 overflow-hidden">
+    <div className="min-h-screen bg-white sm:bg-black flex items-center justify-center px-0 py-0 sm:px-4 sm:py-8">
+      <div className="w-full sm:max-w-sm sm:mx-auto">
+        
+        <div className="bg-white rounded-none sm:rounded-3xl overflow-hidden shadow-none sm:shadow-2xl min-h-screen sm:min-h-0">
+          
+          <div className="relative h-48 overflow-hidden -mx-0">
             <Image
-              src="/construction/meme2.jpg"
+              src="/header_img.png"
               alt="Header Image"
               fill
-              className="object-cover"
+              className="object-cover w-full"
               priority
             />
           </div>
@@ -25,7 +25,7 @@ export default function LoginPage() {
             </h2>
 
             <form className="space-y-8">
-              {/* Email Input */}
+             
               <div className="relative">
                 <input
                   id="email"
@@ -38,7 +38,7 @@ export default function LoginPage() {
                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-black transition-all duration-300 group-focus-within:w-full"></div>
               </div>
 
-              {/* Password Input */}
+              
               <div className="relative">
                 <input
                   id="password"
@@ -56,7 +56,7 @@ export default function LoginPage() {
                 </button>
               </div>
 
-              {/* Spacer for better proportions */}
+              
               <div className="h-8"></div>
 
               {/* Login Button */}
@@ -89,7 +89,7 @@ export default function LoginPage() {
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-8">
+        <div className="text-center mt-8 mb-8 sm:mb-0">
           <p className="text-gray-500 text-sm font-light leading-relaxed">
             Dengan masuk, Anda menyetujui<br />
             <span className="text-gray-400">syarat dan ketentuan kami</span>
