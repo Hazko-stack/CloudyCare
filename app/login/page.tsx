@@ -55,11 +55,7 @@ export default function LoginPage() {
                   </svg>
                 </button>
               </div>
-
               
-              <div className="h-8"></div>
-
-              {/* Login Button */}
               <button
                 formAction={login}
                 className="w-full bg-black hover:bg-gray-800 text-white font-medium py-4 px-6 rounded-2xl transition-all duration-300 text-base tracking-wide shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
@@ -68,7 +64,7 @@ export default function LoginPage() {
               </button>
 
               {/* Divider */}
-              <div className="relative my-8">
+              <div className="relative my-1">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-200"></div>
                 </div>
@@ -86,14 +82,6 @@ export default function LoginPage() {
               </button>
             </form>
           </div>
-        </div>
-
-        {/* Footer */}
-        <div className="text-center mt-8 mb-8 sm:mb-0">
-          <p className="text-gray-500 text-sm font-light leading-relaxed">
-            Dengan masuk, Anda menyetujui<br />
-            <span className="text-gray-400">syarat dan ketentuan kami</span>
-          </p>
         </div>
       </div>
     </div>
