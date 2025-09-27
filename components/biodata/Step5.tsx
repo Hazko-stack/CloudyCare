@@ -18,9 +18,7 @@ export default function Step5({ formState, updateFormState }: StepProps) {
   useEffect(() => {
     updateFormState({
       location_name: selectedLocation?.name || '',
-      location_adm4: selectedLocation?.adm4 || '',
-      latitude: '',
-      longitude: ''
+      location_adm4: selectedLocation?.adm4 || ''
     })
   }, [selectedLocation, updateFormState])
 

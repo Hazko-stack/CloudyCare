@@ -34,8 +34,6 @@ export async function saveBiodata(formData: FormData) {
     other_workout_info: formData.get('other_workout_info') as string,
     location_name: formData.get('location_name') as string,
     location_adm4: formData.get('location_adm4') as string,
-    latitude: parseFloat(formData.get('latitude') as string) || null,
-    longitude: parseFloat(formData.get('longitude') as string) || null,
   }
 
   console.log('Biodata to save:', biodataData)

@@ -35,8 +35,6 @@ export default function BiodataForm({ existingData }: BiodataFormProps) {
     // Step 5
     location_name: existingData?.location_name || '',
     location_adm4: existingData?.location_adm4 || '',
-    latitude: existingData?.latitude?.toString() || '',
-    longitude: existingData?.longitude?.toString() || '',
   })
 
   // Update form state with useCallback to prevent infinite loop
@@ -94,8 +92,6 @@ export default function BiodataForm({ existingData }: BiodataFormProps) {
     completeFormData.append('other_workout_info', formState.other_workout_info)
     completeFormData.append('location_name', formState.location_name)
     completeFormData.append('location_adm4', formState.location_adm4)
-    completeFormData.append('latitude', formState.latitude)
-    completeFormData.append('longitude', formState.longitude)
     
     console.log('Complete FormData entries:')
     for (const [key, value] of completeFormData.entries()) {
@@ -195,8 +191,6 @@ export default function BiodataForm({ existingData }: BiodataFormProps) {
           <input name="other_workout_info" value={formState.other_workout_info} readOnly />
           <input name="location_name" value={formState.location_name} readOnly />
           <input name="location_adm4" value={formState.location_adm4} readOnly />
-          <input name="latitude" value={formState.latitude} readOnly />
-          <input name="longitude" value={formState.longitude} readOnly />
         </div>
 
         {/* Navigation */}

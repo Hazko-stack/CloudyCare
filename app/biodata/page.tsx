@@ -4,10 +4,10 @@ import BiodataForm from '@/components/BiodataForm'
 import { getBiodata } from './actions'
 
 interface BiodataPageProps {
-  searchParams: {
+  searchParams: Promise<{  // ✅ Ubah menjadi Promise
     error?: string
     success?: string
-  }
+  }>
 }
 
 export default async function BiodataPage({ searchParams }: BiodataPageProps) {
@@ -23,6 +23,9 @@ export default async function BiodataPage({ searchParams }: BiodataPageProps) {
   // Get existing biodata
   const existingBiodata = await getBiodata()
 
+  // ✅ Await searchParams (Next.js 15 requirement)
+  const params = await searchParams
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-md mx-auto">
@@ -32,15 +35,15 @@ export default async function BiodataPage({ searchParams }: BiodataPageProps) {
         </div>
 
         {/* Messages */}
-        {searchParams.error && (
+        {params.error && (
           <div className="mx-4 mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
-            {searchParams.error}
+            {params.error}
           </div>
         )}
 
-        {searchParams.success && (
+        {params.success && (
           <div className="mx-4 mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-lg text-sm">
-            {searchParams.success}
+            {params.success}
           </div>
         )}
 

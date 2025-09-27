@@ -12,8 +12,6 @@ export interface BiodataType {
   other_workout_info?: string | null
   location_name?: string | null
   location_adm4?: string | null
-  latitude?: number | null
-  longitude?: number | null
   created_at?: string
   updated_at?: string
 }
@@ -30,8 +28,6 @@ export interface FormState {
   other_workout_info: string
   location_name: string
   location_adm4: string
-  latitude: string
-  longitude: string
 }
 
 export interface StepProps {
@@ -41,6 +37,6 @@ export interface StepProps {
 }
 
 export interface CityData {
-  adm4: string
+  adm4: string 
   name: string
 }
