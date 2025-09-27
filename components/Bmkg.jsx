@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { createClient } from '@/utils/supabase/client';
 
 import { cityList } from '@/data/CityList';
 const Bmkg  = () => {
@@ -10,6 +11,11 @@ const Bmkg  = () => {
   const [regionCode, setRegionCode] = useState('31.71.03.1001');
   const [currentSlide, setCurrentSlide] = useState(0);
   const chartRef = useRef(null);
+  
+  // Search location states
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [loadingLocation, setLoadingLocation] = useState(true);
 
   const exerciseSlides = [
     {
@@ -48,7 +54,7 @@ const Bmkg  = () => {
       }
       
       const data = await response.json();
-      console.log('Data dari BMKG:', data); // Debug log
+      console.log('Data dari BMKG:', data);
       setWeatherData(data);
     } catch (err) {
       setError('Gagal mengambil data cuaca: ' + err.message);
@@ -63,18 +69,54 @@ const Bmkg  = () => {
     fetchData();
   }, []);
 
+  // Fetch user biodata location on mount
+  useEffect(() => {
+    const loadUserLocation = async () => {
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (user) {
+          const { data: biodata } = await supabase
+            .from('user_biodata')
+            .select('location_adm4, location_name')
+            .eq('user_id', user.id)
+            .single();
+
+          if (biodata && biodata.location_adm4) {
+            // Set region code dari biodata
+            setRegionCode(biodata.location_adm4);
+            console.log('Loaded location from biodata:', biodata.location_name);
+          }
+        }
+      } catch (error) {
+        console.error('Error loading user location:', error);
+      } finally {
+        setLoadingLocation(false);
+      }
+    };
+
+    loadUserLocation();
+  }, []);
+
+  // Fetch data when region changes
+  useEffect(() => {
+    // Only fetch if location is loaded
+    if (regionCode && !loadingLocation) {
+      fetchData();
+    }
+  }, [regionCode, loadingLocation]);
+
   // Chart.js effect
   useEffect(() => {
     if (allWeatherData.length > 0 && chartRef.current) {
       import('chart.js/auto').then((Chart) => {
         const ctx = chartRef.current.getContext('2d');
         
-        // Destroy existing chart if it exists
         if (ctx.chart) {
           ctx.chart.destroy();
         }
 
-        // Prepare data for chart
         const chartData = allWeatherData.slice(0, 12).map(weather => ({
           time: new Date(weather.local_datetime).toLocaleTimeString('id-ID', { 
             hour: '2-digit', 
@@ -165,7 +207,6 @@ const Bmkg  = () => {
       });
     }
 
-    // Cleanup function
     return () => {
       if (chartRef.current?.getContext('2d').chart) {
         chartRef.current.getContext('2d').chart.destroy();
@@ -177,63 +218,71 @@ const Bmkg  = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % exerciseSlides.length);
-    }, 3000); // Ganti slide setiap 3 detik
+    }, 3000);
 
     return () => clearInterval(timer);
   }, []);
 
-  // Next slide function
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % exerciseSlides.length);
-  };
-
-  // Previous slide function
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + exerciseSlides.length) % exerciseSlides.length);
-  };
-
-  // Handle dropdown change
-  const handleCityChange = (e) => {
-    setRegionCode(e.target.value);
-    fetchData(); // Auto fetch ketika ganti kota
-  };
-
-  // Get current city name - Updated to use adm4 instead of code
+  // Get current city name
   const getCurrentCityName = () => {
     const city = cityList.find(city => city.adm4 === regionCode);
     return city ? city.name : 'Kemayoran, Jakarta Pusat';
   };
 
-  // Get weather icon berdasarkan weather code
+  // Filter locations based on search
+  const filteredLocations = cityList.filter((location) =>
+    location.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Handle location select
+  const handleLocationSelect = (location) => {
+    setRegionCode(location.adm4);
+    setSearchQuery(location.name);
+    setShowDropdown(false);
+  };
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    setShowDropdown(true);
+  };
+
+  // Clear search
+  const clearSearch = () => {
+    setSearchQuery('');
+    setShowDropdown(false);
+  };
+
+  // Get weather icon
   const getWeatherIcon = (weatherCode, desc) => {
     switch (weatherCode) {
       case 0:
       case 1:
-        return '☀️'; // Cerah
+        return '☀️';
       case 2:
-        return '⛅'; // Cerah Berawan
+        return '⛅';
       case 3:
-        return '☁️'; // Berawan
+        return '☁️';
       case 4:
-        return '☁️'; // Berawan Tebal
+        return '☁️';
       case 5:
-        return '🌫️'; // Udara Kabur
+        return '🌫️';
       case 10:
-        return '🌫️'; // Asap
+        return '🌫️';
       case 45:
-        return '🌫️'; // Kabut
+        return '🌫️';
       case 60:
       case 61:
-        return '🌦️'; // Hujan Ringan
+        return '🌦️';
       case 63:
-        return '🌧️'; // Hujan Sedang
+        return '🌧️';
       case 65:
-        return '🌧️'; // Hujan Lebat
+        return '🌧️';
       case 80:
-        return '🌦️'; // Hujan Lokal
+        return '🌦️';
       case 95:
       case 97:
-        return '⛈️'; // Hujan Petir
+        return '⛈️';
       default:
         return desc?.toLowerCase().includes('cerah') ? '☀️' : 
                desc?.toLowerCase().includes('berawan') ? '☁️' :
@@ -241,7 +290,7 @@ const Bmkg  = () => {
     }
   };
 
-  // Flatten cuaca data untuk ditampilkan dengan sorting yang benar
+  // Get all weather data
   const getAllWeatherData = () => {
     if (!weatherData?.data?.[0]?.cuaca) return [];
     
@@ -250,7 +299,6 @@ const Bmkg  = () => {
       allData.push(...dayData);
     });
     
-    // Sort berdasarkan waktu dari sekarang ke depan
     return allData.sort((a, b) => {
       const timeA = new Date(a.local_datetime).getTime();
       const timeB = new Date(b.local_datetime).getTime();
@@ -271,10 +319,9 @@ const Bmkg  = () => {
 
   return (
     <div className="min-h-screen bg-white p-0 md:p-4 lg:p-8">
-      {/* Responsive Container - Better tablet sizing */}
       <div className="max-w-sm sm:max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl mx-auto min-h-screen sm:min-h-0 bg-white rounded-none sm:rounded-3xl overflow-hidden shadow-none sm:shadow-lg">
         
-        {/* Responsive Header - White background with black text */}
+        {/* Header */}
         <div className="bg-white px-4 sm:px-6 md:px-10 lg:px-12 xl:px-16 pt-8 sm:pt-10 md:pt-14 lg:pt-16 pb-6 sm:pb-8 md:pb-10 lg:pb-12 text-gray-800 relative rounded-none sm:rounded-t-3xl">
           
           <div className="mb-6 md:mb-8 lg:mb-10">
@@ -287,7 +334,6 @@ const Bmkg  = () => {
             <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-medium mb-1 text-gray-800">Hello, good morning </h1>
             <p className="text-sm md:text-base lg:text-lg text-gray-500 mb-4">Today, {dateString}</p>
             
-            {/* Temperature di pojok kiri dengan bold */}
             {currentWeather && (
               <div className="flex items-center space-x-4">
                 <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-gray-800">{currentWeather.t}°C</div>
@@ -300,13 +346,12 @@ const Bmkg  = () => {
           </div>
         </div>
 
-        {/* Responsive Content - Better tablet padding */}
+        {/* Content */}
         <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16">
           
-          {/* Image Slider - Better tablet sizing */}
+          {/* Image Slider */}
           <div className="mb-6 md:mb-8 lg:mb-10">
             <div className="relative rounded-2xl lg:rounded-3xl overflow-hidden bg-white shadow-lg">
-              {/* Slider Container */}
               <div 
                 className="flex transition-transform duration-500 ease-in-out"
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -316,7 +361,6 @@ const Bmkg  = () => {
                     key={index}
                     className="w-full flex-shrink-0 bg-white p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 flex items-center justify-center min-h-[120px] sm:min-h-[140px] md:min-h-[180px] lg:min-h-[200px] xl:min-h-[240px]"
                   >
-                    {/* Fixed: Changed from <image> to <Image> and added proper Next.js Image props */}
                     <Image
                       src={slide.image} 
                       alt={slide.alt}
@@ -324,45 +368,12 @@ const Bmkg  = () => {
                       height={200}
                       className="max-w-full max-h-full object-contain rounded-lg shadow-md"
                       onError={(e) => {
-                        // Fallback jika gambar tidak ditemukan
                         e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%23f3f4f6'/%3E%3Ctext x='100' y='75' font-family='Arial' font-size='14' text-anchor='middle' fill='%236b7280'%3EImage not found%3C/text%3E%3C/svg%3E";
                       }}
                     />
                   </div>
                 ))}
               </div>
-              
-              {/* Navigation Buttons */}
-              {/* <button 
-                onClick={prevSlide}
-                className="absolute left-1 sm:left-2 md:left-3 lg:left-4 xl:left-6 top-1/2 transform -translate-y-1/2 bg-black/20 hover:bg-black/30 rounded-full p-1.5 sm:p-2 md:p-3 lg:p-4 xl:p-5 text-white backdrop-blur-sm transition-all duration-200 shadow-sm"
-              >
-                <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 xl:w-7 xl:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              
-              <button 
-                onClick={nextSlide}
-                className="absolute right-1 sm:right-2 md:right-3 lg:right-4 xl:right-6 top-1/2 transform -translate-y-1/2 bg-black/20 hover:bg-black/30 rounded-full p-1.5 sm:p-2 md:p-3 lg:p-4 xl:p-5 text-white backdrop-blur-sm transition-all duration-200 shadow-sm"
-              >
-                <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 xl:w-7 xl:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button> */}
-              
-              {/* Dots Indicator */}
-              {/* <div className="absolute bottom-2 sm:bottom-3 md:bottom-4 lg:bottom-6 xl:bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-1.5 sm:space-x-2 md:space-x-2.5 lg:space-x-3">
-                {exerciseSlides.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentSlide(index)}
-                    className={`w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-3 md:h-3 lg:w-4 lg:h-4 xl:w-5 xl:h-5 rounded-full transition-colors ${
-                      index === currentSlide ? 'bg-gray-700' : 'bg-gray-400'
-                    }`}
-                  />
-                ))}
-              </div> */}
             </div>
           </div>
 
@@ -375,12 +386,12 @@ const Bmkg  = () => {
             </div>
           </div>
 
-          {/* Question - Better tablet sizing */}
+          {/* Question */}
           <div className="mb-4 sm:mb-6 md:mb-8 lg:mb-10">
             <h2 className="text-gray-700 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-medium text-center">How's the temperature today?</h2>
           </div>
 
-          {/* Responsive Loading State */}
+          {/* Loading State */}
           {loading && (
             <div className="flex justify-center items-center py-8 md:py-10 lg:py-12">
               <div className="flex items-center space-x-3">
@@ -390,14 +401,14 @@ const Bmkg  = () => {
             </div>
           )}
 
-          {/* Responsive Error State */}
+          {/* Error State */}
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-3 sm:p-4 md:p-5 mb-4 sm:mb-6 md:mb-8">
               <p className="text-red-700 text-sm md:text-base">{error}</p>
             </div>
           )}
 
-          {/* Responsive Weather Hourly Forecast - Better tablet grid */}
+          {/* Weather Hourly Forecast */}
           {allWeatherData.length > 0 && !loading && (
             <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2 sm:gap-3 md:gap-4 lg:gap-6 xl:gap-8 mb-4 sm:mb-6 md:mb-8 lg:mb-10">
               {allWeatherData
@@ -437,34 +448,81 @@ const Bmkg  = () => {
             </div>
           )}
 
-          {/* City Selector Dropdown - Better tablet sizing */}
+          {/* Location Search with Dropdown */}
           <div className="mb-4 sm:mb-6 md:mb-8 lg:mb-10">
             <div className="max-w-md md:max-w-lg mx-auto">
               <label className="block text-gray-700 text-sm md:text-base lg:text-base font-medium mb-2">
                 Choose Location:
               </label>
-              <select
-                value={regionCode}
-                onChange={handleCityChange}
-                disabled={loading}
-                className="w-full px-3 sm:px-4 md:px-5 py-2.5 sm:py-3 md:py-3.5 lg:py-4 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-gray-800 text-sm md:text-base lg:text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed bg-white shadow-sm appearance-none cursor-pointer"
-                style={{ 
-                  backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
-                  backgroundPosition: 'right 0.5rem center',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundSize: '1.5em 1.5em'
-                }}
-              >
-                {cityList.map((city) => (
-                  <option 
-                    key={city.adm4} 
-                    value={city.adm4}
-                    className="text-gray-800 font-medium py-2 px-3 bg-white hover:bg-gray-50"
+              
+              {/* Search Input */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search location..."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  onFocus={() => setShowDropdown(true)}
+                  className="w-full pl-10 pr-10 py-2.5 sm:py-3 md:py-3.5 lg:py-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white text-gray-900 placeholder-gray-500 text-sm md:text-base"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={clearSearch}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
                   >
-                    {city.name}
-                  </option>
-                ))}
-              </select>
+                    <svg className="h-5 w-5 text-gray-400 hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+              </div>
+
+              {/* Dropdown Results */}
+              {showDropdown && searchQuery && filteredLocations.length > 0 && (
+                <div className="mt-2 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto absolute z-10 w-full max-w-md md:max-w-lg">
+                  {filteredLocations.slice(0, 10).map((location, index) => (
+                    <div
+                      key={`${location.adm4}-${index}`}
+                      className="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                      onClick={() => handleLocationSelect(location)}
+                    >
+                      <div className="flex items-center">
+                        <svg className="h-4 w-4 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span className="text-gray-900 text-sm md:text-base">{location.name}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* No Results */}
+              {showDropdown && searchQuery && filteredLocations.length === 0 && (
+                <div className="mt-2 bg-white border border-gray-300 rounded-lg shadow-lg p-4">
+                  <div className="text-gray-500 text-center text-sm">
+                    No location found for "{searchQuery}"
+                  </div>
+                </div>
+              )}
+
+              {/* Selected Location Display */}
+              {!searchQuery && getCurrentCityName() && (
+                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <div className="flex items-center">
+                    <svg className="h-5 w-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-blue-800 font-medium text-sm md:text-base">Current location: {getCurrentCityName()}</span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
