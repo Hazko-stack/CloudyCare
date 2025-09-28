@@ -165,7 +165,7 @@ export default async function ArtikelDetailPage({ params }) {
             <div className="max-w-5xl mx-auto">
                 <Image
                 src={article.frontmatter.coverImage}
-                alt={article.frontmatter.title} // <-- Tambahin alt
+                alt={article.frontmatter.title} 
                 width={1200}
                 height={600}
                 className="w-full"
