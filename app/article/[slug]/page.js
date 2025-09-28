@@ -3,6 +3,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import matter from 'gray-matter'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import Image from 'next/image'
 
 // List artikel yang ada
 const KNOWN_ARTICLES = [
@@ -80,7 +81,7 @@ const components = {
     <pre className="bg-black text-white p-6 rounded-none overflow-x-auto my-8 text-sm" {...props} />
   ),
   img: (props) => (
-    <img className="w-full my-8" {...props} />
+    <Image className="w-full my-8" {...props} />
   ),
   a: (props) => (
     <a className="underline underline-offset-2 hover:no-underline transition-all" {...props} />
