@@ -4,7 +4,7 @@ import BiodataForm from '@/components/BiodataForm'
 import { getBiodata } from './actions'
 
 interface BiodataPageProps {
-  searchParams: Promise<{  // ✅ Ubah menjadi Promise
+  searchParams: Promise<{  
     error?: string
     success?: string
   }>
