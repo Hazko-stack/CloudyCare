@@ -160,18 +160,21 @@ export default async function ArtikelDetailPage({ params }) {
 
         {/* Cover Image */}
         {article.frontmatter.coverImage && (
-          <div className="w-full bg-gray-100 mb-8 sm:mb-12 lg:mb-16">
+        <div className="w-full bg-gray-100 mb-8 sm:mb-12 lg:mb-16">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="max-w-5xl mx-auto">
-                <img
-                  src={article.frontmatter.coverImage}
-                  alt={article.frontmatter.title}
-                  className="w-full"
+            <div className="max-w-5xl mx-auto">
+                <Image
+                src={article.frontmatter.coverImage}
+                alt={article.frontmatter.title} // <-- Tambahin alt
+                width={1200}
+                height={600}
+                className="w-full"
                 />
-              </div>
             </div>
-          </div>
+            </div>
+        </div>
         )}
+
 
         {/* Article Content */}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -242,22 +245,6 @@ export default async function ArtikelDetailPage({ params }) {
           </div>
         </footer>
       </article>
-
-      {/* Page Footer */}
-      <footer className="border-t border-gray-200">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-xs sm:text-sm text-gray-500 font-light">
-              © 2024 CloudyCare. All rights reserved.
-            </p>
-            <div className="flex gap-6 text-xs sm:text-sm text-gray-500">
-              <a href="/" className="hover:text-black transition-colors">Home</a>
-              <a href="/about" className="hover:text-black transition-colors">About</a>
-              <a href="/contact" className="hover:text-black transition-colors">Contact</a>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }
