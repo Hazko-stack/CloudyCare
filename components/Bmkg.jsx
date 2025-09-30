@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { createClient } from '@/utils/supabase/client';
+import WeatherRecommendationBanner from './WeatherRecommendationBanner'; 
 
 import { cityList } from '@/data/CityList';
 const Bmkg  = () => {
@@ -349,32 +350,8 @@ const Bmkg  = () => {
         {/* Content */}
         <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16">
           
-          {/* Image Slider */}
           <div className="mb-6 md:mb-8 lg:mb-10">
-            <div className="relative rounded-2xl lg:rounded-3xl overflow-hidden bg-white shadow-lg">
-              <div 
-                className="flex transition-transform duration-500 ease-in-out"
-                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-              >
-                {exerciseSlides.map((slide, index) => (
-                  <div 
-                    key={index}
-                    className="w-full flex-shrink-0 bg-white p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 flex items-center justify-center min-h-[120px] sm:min-h-[140px] md:min-h-[180px] lg:min-h-[200px] xl:min-h-[240px]"
-                  >
-                    <Image
-                      src={slide.image} 
-                      alt={slide.alt}
-                      width={300}
-                      height={200}
-                      className="max-w-full max-h-full object-contain rounded-lg shadow-md"
-                      onError={(e) => {
-                        e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%23f3f4f6'/%3E%3Ctext x='100' y='75' font-family='Arial' font-size='14' text-anchor='middle' fill='%236b7280'%3EImage not found%3C/text%3E%3C/svg%3E";
-                      }}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
+            <WeatherRecommendationBanner weatherData={allWeatherData} />
           </div>
 
           {/* Weather Chart */}
