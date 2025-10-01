@@ -4,9 +4,16 @@ import Image from "next/image"
 import { StepProps } from "@/component/types/biodata"
 
 export default function Step3({ formState, updateFormState }: StepProps) {
-  const [selectedHistories, setSelectedHistories] = useState<string[]>(
-    formState.medical_history ? formState.medical_history.split(',') : []
-  )
+  const [selectedHistories, setSelectedHistories] = useState<string[]>(() => {
+    if (!formState.medical_history) return []
+    if (typeof formState.medical_history === 'string') {
+      return formState.medical_history.split(',')
+    }
+    if (Array.isArray(formState.medical_history)) {
+      return formState.medical_history
+    }
+    return []
+  })
   const [other, setOther] = useState(formState.other_medical_history || "")
 
   const handleCheckboxChange = (value: string) => {
