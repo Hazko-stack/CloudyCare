@@ -9,21 +9,24 @@ const weatherRecommendations = {
     color: "from-yellow-400 to-orange-500",
     recommendations: [
       {
-        title: "Gunakan Sunscreen SPF 30+",
-        description: "Lindungi kulit dari paparan sinar UV dengan sunscreen minimal SPF 30. Aplikasikan 15-30 menit sebelum keluar rumah.",
-        source: "WHO - Sun Protection Guidelines"
+        title: "Gunakan Sunscreen Spektrum Luas SPF 30+",
+        description:
+          "Lindungi kulit dari sinar UVA dan UVB. Aplikasikan kembali setiap 2 jam, atau lebih sering jika berkeringat atau berenang.",
+        source: "World Health Organization (WHO)",
       },
       {
-        title: "Minum Air Minimal 2L",
-        description: "Cuaca panas meningkatkan risiko dehidrasi. Pastikan minum air putih minimal 8 gelas per hari.",
-        source: "Kementerian Kesehatan RI"
+        title: "Pastikan Hidrasi Cukup (Minimal 2 Liter)",
+        description:
+          "Cuaca panas meningkatkan risiko dehidrasi. Minum air putih secara teratur, jangan menunggu haus. Kebutuhan bisa meningkat jika beraktivitas fisik.",
+        source: "Kementerian Kesehatan RI - Germas",
       },
       {
-        title: "Olahraga Pagi atau Sore",
-        description: "Hindari olahraga outdoor saat matahari terik (10.00-15.00). Pilih waktu pagi atau sore hari.",
-        source: "American Heart Association"
-      }
-    ]
+        title: "Jadwalkan Olahraga di Luar Puncak Sinar Matahari",
+        description:
+          "Hindari aktivitas fisik berat di luar ruangan antara pukul 10.00 hingga 16.00. Waktu terbaik adalah pagi atau sore hari.",
+        source: "American Heart Association",
+      },
+    ],
   },
   cloudy: {
     title: "Cuaca Berawan",
@@ -31,21 +34,24 @@ const weatherRecommendations = {
     color: "from-gray-400 to-gray-600",
     recommendations: [
       {
-        title: "Tetap Pakai Sunscreen",
-        description: "Sinar UV masih bisa menembus awan tipis. Tetap gunakan sunscreen meski cuaca berawan.",
-        source: "Skin Cancer Foundation"
+        title: "Sunscreen Tetap Wajib Digunakan",
+        description:
+          "Hingga 80% radiasi sinar UV matahari dapat menembus awan. Tetap gunakan sunscreen untuk melindungi kulit Anda.",
+        source: "Skin Cancer Foundation",
       },
       {
-        title: "Waktu Ideal untuk Aktivitas Outdoor",
-        description: "Cuaca berawan cocok untuk jogging, bersepeda, atau piknik karena tidak terlalu panas.",
-        source: "National Weather Service"
+        title: "Periksa Indeks UV Sebelum Beraktivitas",
+        description:
+          "Meskipun cuaca sejuk, indeks UV bisa saja sedang atau tinggi. Periksa prakiraan UV harian dari sumber terpercaya seperti BMKG.",
+        source: "BMKG - Info Indeks Sinar UV",
       },
       {
-        title: "Jaga Hidrasi Tubuh",
-        description: "Meski tidak panas, tubuh tetap membutuhkan cairan yang cukup untuk metabolisme optimal.",
-        source: "Mayo Clinic"
-      }
-    ]
+        title: "Jaga Asupan Cairan Tubuh",
+        description:
+          "Tubuh tetap memerlukan hidrasi yang cukup untuk berfungsi optimal meskipun cuaca tidak terasa panas.",
+        source: "Mayo Clinic",
+      },
+    ],
   },
   rainy: {
     title: "Cuaca Hujan",
@@ -53,22 +59,25 @@ const weatherRecommendations = {
     color: "from-blue-400 to-blue-600",
     recommendations: [
       {
-        title: "Siapkan Payung dan Jas Hujan",
-        description: "Selalu bawa payung atau jas hujan saat keluar rumah. Hindari terjebak hujan tanpa perlindungan.",
-        source: "BMKG Safety Guidelines"
+        title: "Pantau Peringatan Dini Cuaca",
+        description:
+          "Selalu periksa informasi cuaca terbaru dari aplikasi atau situs resmi BMKG untuk peringatan hujan lebat, angin kencang, dan potensi banjir.",
+        source: "BMKG - Peringatan Dini Cuaca",
       },
       {
-        title: "Waspadai Cuaca Ekstrem",
-        description: "Jika ada petir dan angin kencang, hindari berada di tempat terbuka atau di bawah pohon tinggi.",
-        source: "BNPB - Disaster Management"
+        title: "Waspada Bahaya Saat Badai Petir",
+        description:
+          "Jika terjadi petir, segera masuk ke dalam ruangan. Hindari berlindung di bawah pohon, tiang listrik, atau berada di area terbuka.",
+        source: "BNPB - Panduan Keselamatan Bencana",
       },
       {
-        title: "Konsumsi Makanan Hangat",
-        description: "Sup, teh hangat, atau jahe dapat membantu menjaga suhu tubuh dan meningkatkan imunitas.",
-        source: "Indonesian Nutrition Association"
-      }
-    ]
-  }
+        title: "Jaga Kebersihan Makanan dan Minuman",
+        description:
+          "Musim hujan meningkatkan risiko penyakit bawaan air. Pastikan minum air yang sudah dimasak dan mengonsumsi makanan yang higienis.",
+        source: "Kementerian Kesehatan RI",
+      },
+    ],
+  },
 };
 
 // Helper function untuk menentukan tipe cuaca dari weather code
