@@ -1,10 +1,11 @@
-// app/article/[slug]/page.js
+
 import { createClient } from '@supabase/supabase-js'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import matter from 'gray-matter'
 import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
+import MdxImage from '@/components/MdxImage'
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic'
@@ -79,6 +80,7 @@ async function getArticleBySlug(slug) {
     const { data: frontmatter, content } = matter(text)
     
     return {
+      
       slug,
       filename: matchingFile,
       frontmatter: {
@@ -91,7 +93,6 @@ async function getArticleBySlug(slug) {
         tags: frontmatter.tags || [],
         readTime: frontmatter.readTime || '5 menit',
         authorBio: frontmatter.authorBio || '',
-        ...frontmatter
       },
       content
     }
@@ -203,21 +204,17 @@ export default async function ArtikelDetailPage({ params }) {
         </header>
 
         {article.frontmatter.coverImage && (
-          <div className="w-full bg-gray-100 mb-8 sm:mb-12 lg:mb-16">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="max-w-5xl mx-auto relative aspect-[21/9]">
-                <Image
-                  src={article.frontmatter.coverImage}
-                  alt={article.frontmatter.title}
-                  fill
-                  className="object-cover"
-                  priority
-                  unoptimized
-                />
-              </div>
-            </div>
-          </div>
-        )}
+  <div className="w-full bg-gray-100 mb-8 sm:mb-12 lg:mb-16">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto">
+        <MdxImage 
+          src={article.frontmatter.coverImage}
+          alt={article.frontmatter.title}
+        />
+      </div>
+    </div>
+  </div>
+)}
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
