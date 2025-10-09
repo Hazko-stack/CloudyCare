@@ -530,7 +530,6 @@ const GuestWeatherPage = () => {
         </div>
       </div>
       
-      {/* BMKG Attribution Footer */}
       <BMKGFooter />
     </div>
   );

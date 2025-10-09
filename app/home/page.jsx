@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Bmkg from "@/components/Bmkg";
 import { FloatingDockDemo } from '@/components/Dock';
+import BMKGFooter from '@/components/BMKGFooter';
 
 // Separate component untuk handle search params
 function AlertMessages() {
@@ -150,6 +151,8 @@ export default function HomePage() {
         
         <Bmkg />
       </main>
+      
+      <BMKGFooter />
       
       {/* Floating Dock - Always visible */}
       <FloatingDockDemo />
