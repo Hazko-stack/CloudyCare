@@ -85,7 +85,7 @@ const getWeatherTypeFromCode = (weatherCode, weatherDesc = '') => {
   return 'cloudy';
 };
 
-const WeatherRecommendationBanner = ({ weatherData = null }) => {
+const WeatherRecommendationBanner = ({ weatherData = null, showHourSelector = true }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedHour, setSelectedHour] = useState(0);
 
@@ -124,7 +124,7 @@ const WeatherRecommendationBanner = ({ weatherData = null }) => {
   return (
     <div className="space-y-4">
       {/* Hour Selector */}
-      {weatherData && weatherData.length > 1 && (
+      {showHourSelector && weatherData && weatherData.length > 1 && (
         <div className="bg-white rounded-2xl p-4 shadow-md">
           <div className="flex items-center gap-2 mb-3">
             <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

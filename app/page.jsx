@@ -1,7 +1,9 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import { cityList } from '@/data/CityList';
-import Image from 'next/image'; 
+import Image from 'next/image';
+import WeatherRecommendationBanner from '@/components/WeatherRecommendationBanner';
+import BMKGFooter from '@/components/BMKGFooter'; 
 
 const GuestWeatherPage = () => {
   const [weatherData, setWeatherData] = useState(null);
@@ -382,36 +384,72 @@ const GuestWeatherPage = () => {
         {/* Responsive Content - Better tablet padding */}
         <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16">
           
-          {/* Image Slider - Better tablet sizing */}
-          <div className="mb-6 md:mb-8 lg:mb-10">
-            <div className="relative rounded-2xl lg:rounded-3xl overflow-hidden bg-white shadow-lg">
-              {/* Slider Container */}
-              <div 
-                className="flex transition-transform duration-500 ease-in-out"
-                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-              >
-                {exerciseSlides.map((slide, index) => (
-                  <div 
-                    key={index}
-                    className="w-full flex-shrink-0 bg-white p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 flex items-center justify-center min-h-[120px] sm:min-h-[140px] md:min-h-[180px] lg:min-h-[200px] xl:min-h-[240px]"
-                  >
-                    <Image
-                      src={slide.image} 
-                      alt={slide.alt}
-                      width={300}
-                      height={200}
-                      className="max-w-full max-h-full object-contain rounded-lg shadow-md"
-                      onError={(e) => {
-                        // Fallback jika gambar tidak ditemukan
-                        e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%23f3f4f6'/%3E%3Ctext x='100' y='75' font-family='Arial' font-size='14' text-anchor='middle' fill='%236b7280'%3EWeather Preview%3C/text%3E%3C/svg%3E";
-                      }}
-                    />
-                  </div>
-                ))}
+          {/* Responsive Weather Hourly Forecast - LIMITED for guests */}
+          {allWeatherData.length > 0 && !loading && (
+            <div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-6 xl:gap-8 mb-4 sm:mb-6 md:mb-8 lg:mb-10">
+                {allWeatherData
+                  .slice(0, GUEST_FORECAST_LIMIT) // Limited to 3 hours for guests
+                  .map((weather, index) => {
+                    const date = new Date(weather.local_datetime);
+                    const timeString = date.toLocaleTimeString('id-ID', { 
+                      hour: '2-digit', 
+                      minute: '2-digit',
+                      hour12: false 
+                    });
+                    const dateString = date.toLocaleDateString('id-ID', { 
+                      weekday: 'short',
+                      day: '2-digit',
+                      month: 'short'
+                    });
+                    
+                    return (
+                      <div key={`${weather.local_datetime}-${index}`} className="text-center">
+                        <div className="bg-gray-50 hover:bg-gray-100 rounded-xl sm:rounded-2xl md:rounded-2xl lg:rounded-3xl p-2 sm:p-3 md:p-4 lg:p-6 xl:p-8 mb-2 md:mb-3 lg:mb-4 transition-colors border border-gray-100 shadow-sm">
+                          <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl mb-1 md:mb-2 lg:mb-3">
+                            {getWeatherIcon(weather.weather, weather.weather_desc)}
+                          </div>
+                        </div>
+                        <div className="text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-semibold text-gray-700 mb-1 md:mb-1.5 lg:mb-2">
+                          {weather.t}°
+                        </div>
+                        <div className="text-xs sm:text-xs md:text-sm lg:text-base xl:text-lg text-gray-500 font-medium mb-1">
+                          {dateString}
+                        </div>
+                        <div className="text-xs md:text-sm lg:text-sm xl:text-base text-gray-400">
+                          {timeString}
+                        </div>
+                      </div>
+                    );
+                  })}
               </div>
-            </div>
-          </div>
 
+              {/* Upgrade Prompt */}
+              <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 text-center border border-blue-200">
+                <div className="text-3xl mb-3">🌟</div>
+                <h3 className="text-lg font-bold text-gray-800 mb-2">Want to see more?</h3>
+                <p className="text-gray-600 text-sm mb-4">
+                  Get more features.
+                </p>
+                <button 
+                  onClick={() => window.location.href = '/login'}
+                  className="bg-black text-white px-6 py-3 rounded-lg font-medium transition-all transform hover:scale-105"
+                >
+                  Sign Up Free
+                </button>
+              </div>
+
+              {/* Weather Recommendation Banner */}
+              <div className="mb-4 mt-6">
+                <WeatherRecommendationBanner 
+                  weatherData={allWeatherData.slice(0, GUEST_FORECAST_LIMIT)} 
+                  showHourSelector={false}
+                />
+              </div>
+              
+              
+            </div>
+          )}
           {/* Weather Chart Section - Fixed overlay positioning */}
           <div className="mb-6 md:mb-8 lg:mb-10">
             {/* Chart title and limitation info - Better mobile layout */}
@@ -452,62 +490,7 @@ const GuestWeatherPage = () => {
             </div>
           )}
 
-          {/* Responsive Weather Hourly Forecast - LIMITED for guests */}
-          {allWeatherData.length > 0 && !loading && (
-            <div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-6 xl:gap-8 mb-4 sm:mb-6 md:mb-8 lg:mb-10">
-                {allWeatherData
-                  .slice(0, GUEST_FORECAST_LIMIT) // Limited to 3 hours for guests
-                  .map((weather, index) => {
-                    const date = new Date(weather.local_datetime);
-                    const timeString = date.toLocaleTimeString('id-ID', { 
-                      hour: '2-digit', 
-                      minute: '2-digit',
-                      hour12: false 
-                    });
-                    const dateString = date.toLocaleDateString('id-ID', { 
-                      weekday: 'short',
-                      day: '2-digit',
-                      month: 'short'
-                    });
-                    
-                    return (
-                      <div key={`${weather.local_datetime}-${index}`} className="text-center">
-                        <div className="bg-gray-50 hover:bg-gray-100 rounded-xl sm:rounded-2xl md:rounded-2xl lg:rounded-3xl p-2 sm:p-3 md:p-4 lg:p-6 xl:p-8 mb-2 md:mb-3 lg:mb-4 transition-colors border border-gray-100 shadow-sm">
-                          <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl mb-1 md:mb-2 lg:mb-3">
-                            {getWeatherIcon(weather.weather, weather.weather_desc)}
-                          </div>
-                        </div>
-                        <div className="text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-semibold text-gray-700 mb-1 md:mb-1.5 lg:mb-2">
-                          {weather.t}°
-                        </div>
-                        <div className="text-xs sm:text-xs md:text-sm lg:text-base xl:text-lg text-gray-500 font-medium mb-1">
-                          {dateString}
-                        </div>
-                        <div className="text-xs md:text-sm lg:text-sm xl:text-base text-gray-400">
-                          {timeString}
-                        </div>
-                      </div>
-                    );
-                  })}
-              </div>
-              
-              {/* Upgrade Prompt */}
-              <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 text-center border border-blue-200">
-                <div className="text-3xl mb-3">🌟</div>
-                <h3 className="text-lg font-bold text-gray-800 mb-2">Want to see more?</h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Get more features.
-                </p>
-                <button 
-                  onClick={() => window.location.href = '/login'}
-                  className="bg-black text-white px-6 py-3 rounded-lg font-medium transition-all transform hover:scale-105"
-                >
-                  Sign Up Free
-                </button>
-              </div>
-            </div>
-          )}
+          
 
           {/* City Selector Dropdown - Better tablet sizing */}
           <div className="mb-4 sm:mb-6 md:mb-8 lg:mb-10">
@@ -546,6 +529,9 @@ const GuestWeatherPage = () => {
           </div>
         </div>
       </div>
+      
+      {/* BMKG Attribution Footer */}
+      <BMKGFooter />
     </div>
   );
 };
