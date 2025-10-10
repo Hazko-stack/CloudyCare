@@ -2,6 +2,7 @@ import { createClient } from '@supabase/supabase-js'
 import matter from 'gray-matter'
 import Link from 'next/link'
 import Image from 'next/image'
+import { FloatingDockDemo } from '@/components/Dock'
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -270,6 +271,9 @@ export default async function ArticlePage() {
           </>
         )}
       </main>
+      
+      {/* Floating Dock - Always visible */}
+      <FloatingDockDemo />
     </div>
   )
 }

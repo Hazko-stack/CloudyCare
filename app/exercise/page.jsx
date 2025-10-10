@@ -455,8 +455,7 @@ const ExerciseSelectionPage = () => {
               Recommended
             </h2>
             <p className="text-sm text-gray-600 mb-4">
-              The weather's cloudy, so this is a recommend workout or exercise
-              for u
+              The weather's cloudy, so this is a recommend workout or exercise for u
             </p>
             <div className="flex gap-4 flex-wrap">
               {recommendedExercises.map((exercise) => (
@@ -485,7 +484,7 @@ const ExerciseSelectionPage = () => {
 
         {/* Enhanced Bottom Sheet */}
         {selectedExercise && (
-          <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 shadow-lg z-50">
+          <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 shadow-lg z-40">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-300 to-pink-400 rounded-lg flex items-center justify-center overflow-hidden">
@@ -538,8 +537,16 @@ const ExerciseSelectionPage = () => {
         )}
       </div>
 
-      {/* Floating Dock - Always visible */}
-      <FloatingDockDemo />
+      {/* Floating Dock - Always Visible */}
+      <div 
+        className={`fixed z-50 transition-all duration-300 ease-in-out ${
+          selectedExercise 
+            ? 'bottom-24 left-1/2 transform -translate-x-1/2' 
+            : 'bottom-4 left-1/2 transform -translate-x-1/2'   
+        }`}
+      >
+        <FloatingDockDemo />
+      </div>
     </>
   );
 };

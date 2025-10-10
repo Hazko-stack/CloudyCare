@@ -122,7 +122,7 @@ export default function HomePage() {
 
   return (
     <React.Fragment>
-      <main className="relative pb-20">
+      <main className="relative pb-32">
         {/* User Header */}
         <div className="bg-black text-white p-3 flex justify-between items-center">
           <div className="flex items-center space-x-3">
@@ -152,7 +152,10 @@ export default function HomePage() {
         <Bmkg />
       </main>
       
-      <BMKGFooter />
+      {/* Footer with margin to avoid dock collision */}
+      <div className="mb-20">
+        <BMKGFooter />
+      </div>
       
       {/* Floating Dock - Always visible */}
       <FloatingDockDemo />
