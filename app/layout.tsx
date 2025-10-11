@@ -9,6 +9,20 @@ export const metadata: Metadata = {
     shortcut: '/logo.png',
     apple: '/logo.png',
   },
+  openGraph: {
+    title: "CloudyCare",
+    description: "Rekomendasi kesehatan berdasarkan cuaca",
+    images: [
+      {
+        url: '/logo.png', 
+        width: 800,
+        height: 600,
+        alt: 'CloudyCare Logo',
+      },
+    ],
+    locale: 'id_ID',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({
