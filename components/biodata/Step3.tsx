@@ -26,7 +26,6 @@ export default function Step3({ formState, updateFormState }: StepProps) {
     })
   }
 
-  // Update parent form state when local state changes
   useEffect(() => {
     updateFormState({
       medical_history: selectedHistories.join(','),

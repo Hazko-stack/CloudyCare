@@ -7,7 +7,6 @@ import Bmkg from "@/components/Bmkg";
 import { FloatingDockDemo } from '@/components/Dock';
 import BMKGFooter from '@/components/BMKGFooter';
 
-// Separate component untuk handle search params
 function AlertMessages() {
   const searchParams = useSearchParams();
   const successMessage = searchParams.get('success');
@@ -15,7 +14,6 @@ function AlertMessages() {
 
   return (
     <>
-      {/* Success Message */}
       {successMessage && (
         <div className="max-w-7xl mx-auto px-4 pt-4">
           <div className="p-4 bg-green-50 border border-green-400 text-green-700 rounded-lg flex items-start gap-3">
@@ -27,7 +25,6 @@ function AlertMessages() {
         </div>
       )}
 
-      {/* Error Message */}
       {errorMessage && (
         <div className="max-w-7xl mx-auto px-4 pt-4">
           <div className="p-4 bg-red-50 border border-red-400 text-red-700 rounded-lg flex items-start gap-3">
@@ -51,8 +48,7 @@ export default function HomePage() {
 
   useEffect(() => {
     const supabase = createClient();
-    
-    // Check if user is authenticated and has biodata
+a
     const checkUserAndBiodata = async () => {
       const { data: { user }, error } = await supabase.auth.getUser();
       
@@ -64,7 +60,6 @@ export default function HomePage() {
       setUser(user);
       setLoading(false);
 
-      // Check if user has biodata
       const { data: biodata, error: biodataError } = await supabase
         .from('user_biodata')
         .select('id')
@@ -72,19 +67,15 @@ export default function HomePage() {
         .single();
 
       if (!biodata || biodataError) {
-        // No biodata found, redirect to biodata page
         router.push('/biodata');
         return;
       }
-
-      // User has biodata, allow access
       setHasBiodata(true);
       setCheckingBiodata(false);
     };
 
     checkUserAndBiodata();
 
-    // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (event === 'SIGNED_OUT' || !session) {
@@ -123,7 +114,6 @@ export default function HomePage() {
   return (
     <React.Fragment>
       <main className="relative pb-32">
-        {/* User Header */}
         <div className="bg-black text-white p-3 flex justify-between items-center">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
@@ -144,20 +134,16 @@ export default function HomePage() {
           </button>
         </div>
 
-        {/* Alert Messages wrapped in Suspense */}
         <Suspense fallback={<div className="h-20" />}>
           <AlertMessages />
         </Suspense>
         
         <Bmkg />
       </main>
-      
-      {/* Footer with margin to avoid dock collision */}
+
       <div className="mb-20">
         <BMKGFooter />
       </div>
-      
-      {/* Floating Dock - Always visible */}
       <FloatingDockDemo />
     </React.Fragment>
   );

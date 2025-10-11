@@ -8,7 +8,6 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 )
 
-// SAMA PERSIS seperti di MDX components
 function getSupabaseImageUrl(path) {
   if (!path) return null
   if (path.startsWith('http')) return path
@@ -179,7 +178,6 @@ export default async function ArticlePage() {
               </div>
             )}
 
-            {/* Other Articles Grid */}
             {sortedArticles.length > 1 && (
               <>
                 <div className="border-t border-gray-200 pt-12 sm:pt-16 mb-8">
@@ -190,7 +188,6 @@ export default async function ArticlePage() {
                 
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12">
                   {sortedArticles.slice(1).map((article) => {
-                    // Thumbnail dulu, fallback ke coverImage
                     const imagePath = article.frontmatter.thumbnail || article.frontmatter.coverImage
                     const imageUrl = getSupabaseImageUrl(imagePath)
                     
@@ -248,7 +245,6 @@ export default async function ArticlePage() {
               </>
             )}
 
-            {/* Tags Section */}
             {sortedArticles.some(a => a.frontmatter.tags?.length > 0) && (
               <div className="mt-16 sm:mt-20 lg:mt-24 pt-12 border-t border-gray-200">
                 <h3 className="text-sm font-light uppercase tracking-wider text-gray-500 mb-6">
@@ -271,8 +267,7 @@ export default async function ArticlePage() {
           </>
         )}
       </main>
-      
-      {/* Floating Dock - Always visible */}
+
       <FloatingDockDemo />
     </div>
   )

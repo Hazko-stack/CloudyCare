@@ -12,21 +12,18 @@ export async function getProfileData() {
     redirect('/login')
   }
 
-  // Get user profile
   const { data: profile } = await supabase
     .from('profiles')
     .select('*')
     .eq('id', user.id)
     .single()
 
-  // Get user biodata
   const { data: biodata, error: biodataError } = await supabase
     .from('user_biodata')
     .select('*')
     .eq('user_id', user.id)
     .single()
 
-  // Debug logging
   console.log('Profile data:', profile)
   console.log('Biodata data:', biodata)
   console.log('Biodata error:', biodataError)
@@ -50,7 +47,6 @@ export async function updateProfile(formData) {
 
   const profileData = {
     full_name: formData.get('full_name'),
-    // tambah field lain sesuai kebutuhan
   }
 
   const { error } = await supabase
