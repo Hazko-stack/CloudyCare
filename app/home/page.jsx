@@ -48,7 +48,6 @@ export default function HomePage() {
 
   useEffect(() => {
     const supabase = createClient();
-a
     const checkUserAndBiodata = async () => {
       const { data: { user }, error } = await supabase.auth.getUser();
       

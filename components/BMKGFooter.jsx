@@ -56,7 +56,7 @@ const BMKGFooter = ({
             <>
               <span className="hidden sm:inline text-gray-400">•</span>
               <span className={styles.updateInfo}>
-                Data diperbarui per 3 jam
+                Data diperbarui 2 kali sehari
               </span>
             </>
           )}
