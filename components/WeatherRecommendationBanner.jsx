@@ -224,8 +224,8 @@ const WeatherRecommendationBanner = ({ weatherData = null, showHourSelector = tr
                 onClick={() => goToSlide(index)}
                 className={`transition-all duration-300 rounded-full ${
                   index === currentIndex 
-                    ? 'w-8 h-2 bg-blue-600' 
-                    : 'w-2 h-2 bg-gray-300 hover:bg-gray-400'
+                    ? 'w-8 h-2 bg-gray-700' 
+                    : 'w-2 h-2 bg-gray-400'
                 }`}
                 aria-label={`Go to recommendation ${index + 1}`}
               />

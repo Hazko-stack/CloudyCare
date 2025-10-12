@@ -15,26 +15,9 @@ const GuestWeatherPage = () => {
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const chartRef = useRef(null);
 
-  // Data slide untuk gambar saja
-  const exerciseSlides = [
-    {
-      image: "/construction/meme1.jpg",
-      alt: "Weather Image 1"
-    },
-    {
-      image: "/construction/meme1.jpg", 
-      alt: "Weather Image 2"
-    },
-    {
-      image: "/construction/meme1.jpg",
-      alt: "Weather Image 3"
-    }
-  ];
-
-  // Guest limitations - hanya tampilkan 3 jam ke depan
   const GUEST_FORECAST_LIMIT = 3;
 
-  // Fungsi untuk fetch data
+
   const fetchData = async () => {
     setLoading(true);
     setError(null);
@@ -66,23 +49,20 @@ const GuestWeatherPage = () => {
     }
   };
 
-  // Load data saat component mount
   useEffect(() => {
     fetchData();
   }, []);
 
-  // Chart.js effect - Limited for guests
   useEffect(() => {
     if (allWeatherData.length > 0 && chartRef.current) {
       import('chart.js/auto').then((Chart) => {
         const ctx = chartRef.current.getContext('2d');
-        
-        // Destroy existing chart if it exists
+ 
         if (ctx.chart) {
           ctx.chart.destroy();
         }
 
-        // Prepare data for chart - Limited to GUEST_FORECAST_LIMIT for guests
+ 
         const chartData = allWeatherData.slice(0, GUEST_FORECAST_LIMIT).map(weather => ({
           time: new Date(weather.local_datetime).toLocaleTimeString('id-ID', { 
             hour: '2-digit', 
@@ -173,7 +153,6 @@ const GuestWeatherPage = () => {
       });
     }
 
-    // Cleanup function
     return () => {
       if (chartRef.current?.getContext('2d').chart) {
         chartRef.current.getContext('2d').chart.destroy();
@@ -181,50 +160,28 @@ const GuestWeatherPage = () => {
     };
   }, [weatherData]);
 
-  // Auto slide effect
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % exerciseSlides.length);
-    }, 3000); // Ganti slide setiap 3 detik
-
-    return () => clearInterval(timer);
-  }, []);
-
-  // Show login prompt after 30 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowLoginPrompt(true);
-    }, 30000); // Show after 30 seconds
+    }, 30000);
 
     return () => clearTimeout(timer);
   }, []);
 
-  // Next slide function
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % exerciseSlides.length);
-  };
 
-  // Previous slide function
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + exerciseSlides.length) % exerciseSlides.length);
-  };
-
-  // Handle dropdown change - Limited for guests
   const handleCityChange = (e) => {
     setRegionCode(e.target.value);
-    fetchData(); // Auto fetch ketika ganti kota
+    fetchData(); 
     
-    // Show upgrade prompt for guests after changing city multiple times
+   
     setShowLoginPrompt(true);
   };
 
-  // Get current city name - Updated to use adm4 instead of code
   const getCurrentCityName = () => {
     const city = cityList.find(city => city.adm4 === regionCode);
     return city ? city.name : 'Kemayoran, Jakarta Pusat';
   };
 
-  // Get weather icon berdasarkan weather code
   const getWeatherIcon = (weatherCode, desc) => {
     switch (weatherCode) {
       case 0:
@@ -261,7 +218,6 @@ const GuestWeatherPage = () => {
     }
   };
 
-  // Flatten cuaca data untuk ditampilkan dengan sorting yang benar
   const getAllWeatherData = () => {
     if (!weatherData?.data?.[0]?.cuaca) return [];
     
@@ -269,8 +225,7 @@ const GuestWeatherPage = () => {
     weatherData.data[0].cuaca.forEach(dayData => {
       allData.push(...dayData);
     });
-    
-    // Sort berdasarkan waktu dari sekarang ke depan
+
     return allData.sort((a, b) => {
       const timeA = new Date(a.local_datetime).getTime();
       const timeB = new Date(b.local_datetime).getTime();
@@ -290,9 +245,8 @@ const GuestWeatherPage = () => {
   });
 
   return (
-    <div className="min-h-screen bg-white p-0 md:p-4 lg:p-8 relative">
-      {/* Guest Banner */}
-      <div className="bg-black text-white p-3 text-center relative rounded-b-md">
+    <div className="min-h-screen bg-background p-0 md:p-4 lg:p-8 relative">
+      <div className="bg-primary text-text-base p-3 text-center relative rounded-b-md">
         <div className="flex items-center justify-center space-x-2">
           <span className="text-sm font-medium">Welcome, Guest!</span>
           <span className="text-xs opacity-75">Limited preview</span>
@@ -305,7 +259,6 @@ const GuestWeatherPage = () => {
         </button>
       </div>
 
-      {/* Login Prompt Modal */}
       {showLoginPrompt && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl p-6 max-w-md w-full mx-4 relative">
@@ -326,7 +279,7 @@ const GuestWeatherPage = () => {
               <div className="space-y-3">
                 <button 
                   onClick={() => window.location.href = '/login'}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium transition-colors"
+                  className="w-full bg-primary hover:bg-gray-700 text-white py-3 px-4 rounded-lg font-medium transition-colors"
                 >
                   Sign In with Account
                 </button>
@@ -345,13 +298,8 @@ const GuestWeatherPage = () => {
           </div>
         </div>
       )}
-
-      {/* Responsive Container - Better tablet sizing */}
       <div className="max-w-sm sm:max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl mx-auto min-h-screen sm:min-h-0 bg-white rounded-none sm:rounded-3xl overflow-hidden shadow-none sm:shadow-lg">
-        
-        {/* Responsive Header - White background with black text */}
-        <div className="bg-white px-4 sm:px-6 md:px-10 lg:px-12 xl:px-16 pt-8 sm:pt-10 md:pt-14 lg:pt-16 pb-6 sm:pb-8 md:pb-10 lg:pb-12 text-gray-800 relative rounded-none sm:rounded-t-3xl">
-          
+        <div className="bg-accent px-4 sm:px-6 md:px-10 lg:px-12 xl:px-16 pt-8 sm:pt-10 md:pt-14 lg:pt-16 pb-6 sm:pb-8 md:pb-10 lg:pb-12 text-gray-800 relative rounded-none sm:rounded-t-3xl">
           <div className="mb-6 md:mb-8 lg:mb-10">
             <div className="flex items-center text-gray-600 mb-2">
               <svg className="w-4 h-4 md:w-5 md:h-5 lg:w-5 lg:h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
@@ -361,11 +309,8 @@ const GuestWeatherPage = () => {
             </div>
             <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-medium mb-1 text-gray-800">Hello, good morning </h1>
             <p className="text-sm md:text-base lg:text-lg text-gray-500 mb-4">Today, {dateString}</p>
-            
-            {/* Temperature and Guest Warning Layout */}
             {currentWeather && (
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mt-4">
-                {/* Temperature Section */}
                 <div className="flex items-center space-x-4">
                   <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-gray-800">{currentWeather.t}°C</div>
                   <div className="bg-gray-100 rounded-full px-3 py-1.5 md:px-4 md:py-2 flex items-center border border-gray-200">
@@ -374,7 +319,6 @@ const GuestWeatherPage = () => {
                   </div>
                 </div>
                 
-                {/* Guest Warning Box - Larger and positioned to the side */}
                 <div className="bg-orange-50 border border-orange-200 rounded-xl px-4 py-3 lg:px-6 lg:py-4 lg:max-w-sm">
                   <div className="flex items-center justify-center lg:justify-start space-x-2">
                     <span className="text-lg">🔒</span>
@@ -389,15 +333,12 @@ const GuestWeatherPage = () => {
           </div>
         </div>
 
-        {/* Responsive Content - Better tablet padding */}
-        <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16">
-          
-          {/* Responsive Weather Hourly Forecast - LIMITED for guests */}
+        <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 bg-primary">
           {allWeatherData.length > 0 && !loading && (
             <div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-6 xl:gap-8 mb-4 sm:mb-6 md:mb-8 lg:mb-10">
                 {allWeatherData
-                  .slice(0, GUEST_FORECAST_LIMIT) // Limited to 3 hours for guests
+                  .slice(0, GUEST_FORECAST_LIMIT) 
                   .map((weather, index) => {
                     const date = new Date(weather.local_datetime);
                     const timeString = date.toLocaleTimeString('id-ID', { 
@@ -431,9 +372,7 @@ const GuestWeatherPage = () => {
                     );
                   })}
               </div>
-
-              {/* Upgrade Prompt */}
-              <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 text-center border border-blue-200">
+              <div className="bg-accent rounded-2xl p-6 text-center border border-blue-200">
                 <div className="text-3xl mb-3">🌟</div>
                 <h3 className="text-lg font-bold text-gray-800 mb-2">Want to see more?</h3>
                 <p className="text-gray-600 text-sm mb-4">
@@ -446,8 +385,6 @@ const GuestWeatherPage = () => {
                   Sign Up Free
                 </button>
               </div>
-
-              {/* Weather Recommendation Banner */}
               <div className="mb-4 mt-6">
                 <WeatherRecommendationBanner 
                   weatherData={allWeatherData.slice(0, GUEST_FORECAST_LIMIT)} 
@@ -458,11 +395,9 @@ const GuestWeatherPage = () => {
               
             </div>
           )}
-          {/* Weather Chart Section - Fixed overlay positioning */}
           <div className="mb-6 md:mb-8 lg:mb-10">
-            {/* Chart title and limitation info - Better mobile layout */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
-              <h3 className="text-lg md:text-xl font-semibold text-gray-800">Weather Forecast Chart</h3>
+              <h3 className="bg-accent rounded-lg text-lg md:text-xl font-semibold text-text-base">Weather Forecast Chart</h3>
               <div className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap">
                 Guest: {GUEST_FORECAST_LIMIT}h only
               </div>
@@ -474,14 +409,10 @@ const GuestWeatherPage = () => {
               </div>
             </div>
           </div>
-
-          {/* Question - Better tablet sizing */}
           <div className="mb-4 sm:mb-6 md:mb-8 lg:mb-10">
             <h2 className="text-gray-700 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-medium text-center">How's the temperature today?</h2>
             <p className="text-center text-sm text-gray-500 mt-2">Guest preview - Sign in for extended forecasts</p>
           </div>
-
-          {/* Responsive Loading State */}
           {loading && (
             <div className="flex justify-center items-center py-8 md:py-10 lg:py-12">
               <div className="flex items-center space-x-3">
@@ -490,17 +421,12 @@ const GuestWeatherPage = () => {
               </div>
             </div>
           )}
-
-          {/* Responsive Error State */}
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-3 sm:p-4 md:p-5 mb-4 sm:mb-6 md:mb-8">
               <p className="text-red-700 text-sm md:text-base">{error}</p>
             </div>
           )}
 
-          
-
-          {/* City Selector Dropdown - Better tablet sizing */}
           <div className="mb-4 sm:mb-6 md:mb-8 lg:mb-10">
             <div className="max-w-md md:max-w-lg mx-auto">
               <label className="block text-gray-700 text-sm md:text-base lg:text-base font-medium mb-2">
@@ -537,10 +463,10 @@ const GuestWeatherPage = () => {
           </div>
         </div>
       </div>
-      
+      <BMKGFooter />
       <FloatingDockDemo />
       
-      <BMKGFooter />
+   
     </div>
   );
 };
