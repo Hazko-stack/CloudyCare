@@ -435,15 +435,15 @@ const WorkoutContent = () => {
           {/* Exercise Stats */}
           <div className="grid grid-cols-3 gap-4 mb-6">
             <div className="text-center p-3 bg-gray-50 rounded-xl">
-              <div className="text-2xl font-bold text-blue-600">{currentExercise.duration}</div>
+              <div className="text-2xl font-bold text-primary">{currentExercise.duration}</div>
               <div className="text-sm text-gray-600">Duration</div>
             </div>
             <div className="text-center p-3 bg-gray-50 rounded-xl">
-              <div className="text-2xl font-bold text-green-600">{currentExercise.level}</div>
+              <div className="text-2xl font-bold text-primary">{currentExercise.level}</div>
               <div className="text-sm text-gray-600">Level</div>
             </div>
             <div className="text-center p-3 bg-gray-50 rounded-xl">
-              <div className="text-lg font-bold text-purple-600 truncate">{currentExercise.focus}</div>
+              <div className="text-lg font-bold text-primary truncate">{currentExercise.focus}</div>
               <div className="text-sm text-gray-600">Focus</div>
             </div>
           </div>
@@ -462,7 +462,7 @@ const WorkoutContent = () => {
             </div>
           </div>
 
-          {/* Motivational Tip */}
+         
           <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4 mb-6">
             <div className="flex items-start gap-3">
               <div className="text-2xl">💡</div>
@@ -487,7 +487,7 @@ const WorkoutContent = () => {
                   key={ex.id}
                   className={`h-2 flex-1 rounded-full transition-all duration-500 ${
                     ex.id === currentExercise.id 
-                      ? "bg-yellow-600" 
+                      ? "bg-yellow-500" 
                       : index < exercises.findIndex(e => e.id === currentExercise.id)
                       ? "bg-primary"
                       : "bg-background"
@@ -518,7 +518,7 @@ const WorkoutContent = () => {
             
             <button
               onClick={handleNext}
-              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold rounded-xl transition-all duration-200 hover:shadow-lg transform hover:scale-105"
+              className="flex items-center gap-2 px-6 py-3 bg-primary  text-text-base font-semibold rounded-xl transition-all duration-200 hover:shadow-lg transform hover:scale-105"
             >
               Next
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
