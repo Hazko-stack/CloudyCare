@@ -48,12 +48,6 @@ export default function LoginPage() {
                   className="w-full px-0 py-4 border-0 border-b border-gray-200 bg-transparent text-gray-900 placeholder-gray-400 focus:outline-none focus:border-black transition-all duration-300 text-base font-light pr-8"
                   placeholder="Masukkan password"
                 />
-                <button type="button" className="absolute right-0 top-4 text-gray-400 hover:text-gray-600 transition-colors">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
-                </button>
               </div>
               
               <button
@@ -63,7 +57,6 @@ export default function LoginPage() {
                 Masuk
               </button>
 
-              {/* Divider */}
               <div className="relative my-1">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-200"></div>
@@ -73,7 +66,6 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              {/* Sign Up Button */}
               <button
                 formAction={signup}
                 className="w-full bg-white hover:bg-gray-50 text-black font-medium py-4 px-6 rounded-2xl transition-all duration-300 text-base tracking-wide border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md"

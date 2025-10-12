@@ -16,14 +16,12 @@ async function getProfileData() {
     redirect('/login')
   }
 
-  // Get user profile
   const { data: profile } = await supabase
     .from('profiles')
     .select('*')
     .eq('id', user.id)
     .single()
 
-  // Get user biodata
   const { data: biodata, error: biodataError } = await supabase
     .from('user_biodata')
     .select('*')
@@ -40,13 +38,10 @@ async function getProfileData() {
 
 export default async function ProfilePage() {
   const { user, profile, biodata, hasData } = await getProfileData()
-
-  // Calculate BMI
   const bmi = biodata.weight && biodata.height 
     ? (biodata.weight / ((biodata.height / 100) ** 2)).toFixed(1)
     : null
 
-  // If no biodata, show minimal empty state
   if (!hasData) {
     return (
       <>
@@ -74,8 +69,6 @@ export default async function ProfilePage() {
             </div>
           </div>
         </div>
-        
-        {/* Floating Dock */}
         <FloatingDockDemo />
       </>
     )
@@ -85,22 +78,16 @@ export default async function ProfilePage() {
     <>
       <div className="min-h-screen bg-white pb-20">
         <div className="max-w-6xl mx-auto px-6 py-8">
-          
-          {/* Debug Info */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
-            <h3 className="font-semibold text-blue-800 mb-2">Info Debug:</h3>
+          {/* <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
+            <h3 className="font-semibold text-blue-800 mb-2">Debug Info:</h3>
             <div className="text-sm text-blue-700">
               <p>Pengguna: {user.email}</p>
               <p>ID Biodata: {biodata.id}</p>
               <p>Diperbarui: {biodata.updated_at}</p>
               <p>BMI: {bmi || 'Belum dihitung'}</p>
             </div>
-          </div>
-
-          {/* Minimal Header */}
+          </div> */}
           <ProfileHeader user={user} profile={profile} biodata={biodata} />
-
-          {/* Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12">
             <BMICard bmi={bmi} biodata={biodata} />
             <LocationInfo biodata={biodata} />
@@ -108,7 +95,6 @@ export default async function ProfilePage() {
             <ActivityCard biodata={biodata} />
           </div>
 
-          {/* Edit Link */}
           <div className="mt-12 text-center">
             <a
               href="/biodata"
@@ -119,8 +105,6 @@ export default async function ProfilePage() {
           </div>
         </div>
       </div>
-      
-      {/* Floating Dock - Always visible */}
       <FloatingDockDemo />
     </>
   )

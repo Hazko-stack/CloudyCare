@@ -122,7 +122,7 @@ const components = {
   ),
   img: (props) => {
   const src = getSupabaseImageUrl(props.src)
-  console.log('Image src:', props.src, '→', src) // Debug log
+  console.log('Image src:', props.src, '→', src) 
   return (
     <span className="block relative w-full my-8 rounded-lg overflow-hidden aspect-video">
       <Image

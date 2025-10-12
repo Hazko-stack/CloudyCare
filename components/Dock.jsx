@@ -1,15 +1,11 @@
 import React from "react";
 import { FloatingDock } from "@/components/ui/floating-dock";
 import {
-  IconBrandGithub,
   IconBook2,
   IconTreadmill,
   IconUserCircle,
-  IconBrandX,
-  IconExchange,
   IconHome,
-  IconNewSection,
-  IconTerminal2,
+  IconAi,
 } from "@tabler/icons-react";
 
 export function FloatingDockDemo() {
@@ -38,7 +34,7 @@ export function FloatingDockDemo() {
     {
       title: "Artificial Intelligence",
       icon: (
-        <IconBook2 className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <IconAi className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
       href: "/ai",
     },

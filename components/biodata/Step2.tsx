@@ -7,7 +7,6 @@ export default function Step2({ formState, updateFormState }: StepProps) {
   const [weight, setWeight] = useState(formState.weight || "")
   const [height, setHeight] = useState(formState.height || "")
 
-  // Update parent form state when local state changes
   useEffect(() => {
     updateFormState({
       weight: weight,

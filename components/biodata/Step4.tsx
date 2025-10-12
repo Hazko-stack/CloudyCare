@@ -7,7 +7,6 @@ export default function Step4({ formState, updateFormState }: StepProps) {
   const [workout, setWorkout] = useState(formState.workout_frequency || "")
   const [other, setOther] = useState(formState.other_workout_info || "")
 
-  // Update parent form state when local state changes
   useEffect(() => {
     updateFormState({
       workout_frequency: workout,

@@ -9,8 +9,7 @@ export async function saveBiodata(formData: FormData) {
   console.log('=== SAVE BIODATA STARTED ===')
   
   const supabase = await createClient()
-  
-  // Get current user
+
   const { data: { user }, error: userError } = await supabase.auth.getUser()
   console.log('User:', user?.id, user?.email)
   console.log('User Error:', userError)
@@ -20,7 +19,6 @@ export async function saveBiodata(formData: FormData) {
     redirect('/login')
   }
 
-  // Extract and log form data
   const biodataData = {
     user_id: user.id,
     full_name: formData.get('full_name') as string,
@@ -38,7 +36,6 @@ export async function saveBiodata(formData: FormData) {
 
   console.log('Biodata to save:', biodataData)
 
-  // Check if biodata already exists
   const { data: existingData, error: checkError } = await supabase
     .from('user_biodata')
     .select('id')

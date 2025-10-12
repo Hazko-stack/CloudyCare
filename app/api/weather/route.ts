@@ -11,7 +11,6 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // Validasi format kode wilayah (xx.xx.xx.xxxx)
   const codePattern = /^\d{2}\.\d{2}\.\d{2}\.\d{4}$/;
   if (!codePattern.test(adm4)) {
     return NextResponse.json(
@@ -32,7 +31,6 @@ export async function GET(request: NextRequest) {
           'Accept-Language': 'id-ID,id;q=0.9,en;q=0.8',
           'Cache-Control': 'no-cache',
         },
-        // Cache for 30 minutes
         next: { revalidate: 1800 }
       }
     );
@@ -65,7 +63,6 @@ export async function GET(request: NextRequest) {
     const data = await response.json();
     console.log('Successfully fetched weather data');
 
-    // Validate response data
     if (!data || !data.data || !Array.isArray(data.data)) {
       return NextResponse.json(
         { error: 'Format data tidak valid dari BMKG' },
@@ -73,7 +70,6 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Add response headers
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
     headers.set('Cache-Control', 'public, max-age=1800'); // Cache for 30 minutes
@@ -112,7 +108,6 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// Handle OPTIONS request for CORS
 export async function OPTIONS() {
   return new NextResponse(null, {
     status: 200,

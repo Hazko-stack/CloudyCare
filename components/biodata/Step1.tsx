@@ -8,7 +8,6 @@ export default function Step1({ formState, updateFormState }: StepProps) {
   const [age, setAge] = useState(formState.age || "")
   const [gender, setGender] = useState(formState.gender || "")
 
-  // Update parent form state when local state changes
   useEffect(() => {
     updateFormState({
       full_name: fullName,

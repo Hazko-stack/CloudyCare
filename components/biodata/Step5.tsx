@@ -14,7 +14,6 @@ export default function Step5({ formState, updateFormState }: StepProps) {
   )
   const [showDropdown, setShowDropdown] = useState(false)
 
-  // Update parent form state when location changes
   useEffect(() => {
     updateFormState({
       location_name: selectedLocation?.name || '',
@@ -56,7 +55,6 @@ export default function Step5({ formState, updateFormState }: StepProps) {
 
       <div className="text-center text-gray-500 mb-4">Pilih lokasi</div>
 
-      {/* Search Input */}
       <div className="relative max-w-md">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,7 +86,6 @@ export default function Step5({ formState, updateFormState }: StepProps) {
         )}
       </div>
 
-      {/* Display filtered locations */}
       {showDropdown && searchQuery && filteredLocation.length > 0 && (
         <div className="mt-2 max-w-md bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto z-10 absolute">
           {filteredLocation.slice(0, 10).map((location, index) => (
@@ -117,7 +114,6 @@ export default function Step5({ formState, updateFormState }: StepProps) {
         </div>
       )}
 
-      {/* Selected Location Display */}
       {selectedLocation && (
         <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
           <div className="flex items-center">

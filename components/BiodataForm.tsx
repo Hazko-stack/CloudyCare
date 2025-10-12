@@ -40,14 +40,13 @@ export default function BiodataForm({ existingData }: BiodataFormProps) {
   // Update form state with useCallback to prevent infinite loop
   const updateFormState = useCallback((updates: Partial<FormState>) => {
     setFormState(prev => {
-      // Only update if values actually changed
       const newState = { ...prev, ...updates }
       const hasChanges = Object.keys(updates).some(key => 
         prev[key as keyof FormState] !== updates[key as keyof FormState]
       )
       
       if (!hasChanges) {
-        return prev // Return same reference if no changes
+        return prev 
       }
       
       console.log('Form state updated:', updates)
@@ -76,11 +75,8 @@ export default function BiodataForm({ existingData }: BiodataFormProps) {
   const handleSubmit = async () => {
     console.log('Form submitting with state:', formState)
     setIsSubmitting(true)
-    
-    // Create new FormData with all steps data
+
     const completeFormData = new FormData()
-    
-    // Add all form state to FormData
     completeFormData.append('full_name', formState.full_name)
     completeFormData.append('age', formState.age)
     completeFormData.append('gender', formState.gender)
@@ -144,7 +140,7 @@ export default function BiodataForm({ existingData }: BiodataFormProps) {
     >
       <div className="p-6">
         {/* Debug Info */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+        {/* <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
           <details>
             <summary className="font-semibold text-blue-800 cursor-pointer">Debug Form State</summary>
             <div className="text-sm text-blue-700 mt-2">
@@ -157,7 +153,7 @@ export default function BiodataForm({ existingData }: BiodataFormProps) {
               <p>Location: {formState.location_name || 'Empty'}</p>
             </div>
           </details>
-        </div>
+        </div> */}
 
         {/* Progress indicator */}
         <div className="flex justify-between mb-8">
@@ -175,10 +171,8 @@ export default function BiodataForm({ existingData }: BiodataFormProps) {
           ))}
         </div>
 
-        {/* Current Step */}
         {renderStep()}
 
-        {/* Hidden inputs to preserve all form data */}
         <div style={{ display: 'none' }}>
           <input name="full_name" value={formState.full_name} readOnly />
           <input name="age" value={formState.age} readOnly />
@@ -193,7 +187,6 @@ export default function BiodataForm({ existingData }: BiodataFormProps) {
           <input name="location_adm4" value={formState.location_adm4} readOnly />
         </div>
 
-        {/* Navigation */}
         <div className="flex justify-between mt-8">
           {currentStep > 1 && (
             <button 
