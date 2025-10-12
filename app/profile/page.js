@@ -58,18 +58,18 @@ export default async function ProfilePage() {
               </div>
               
               <h1 className="text-2xl font-light mb-4 text-gray-900">
-                Complete Your Profile
+                Lengkapi Profil Anda
               </h1>
               
               <p className="text-gray-600 mb-8 max-w-md mx-auto leading-relaxed">
-                Fill out your health information to get started
+                Isi informasi kesehatan Anda untuk memulai
               </p>
               
               <a
                 href="/biodata"
                 className="inline-block bg-black text-white px-8 py-3 hover:bg-gray-800 transition-colors"
               >
-                Fill Biodata
+                Isi Biodata
               </a>
             </div>
           </div>
@@ -88,12 +88,12 @@ export default async function ProfilePage() {
           
           {/* Debug Info */}
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
-            <h3 className="font-semibold text-blue-800 mb-2">Debug Info:</h3>
+            <h3 className="font-semibold text-blue-800 mb-2">Info Debug:</h3>
             <div className="text-sm text-blue-700">
-              <p>User: {user.email}</p>
-              <p>Biodata ID: {biodata.id}</p>
-              <p>Updated: {biodata.updated_at}</p>
-              <p>BMI: {bmi || 'Not calculated'}</p>
+              <p>Pengguna: {user.email}</p>
+              <p>ID Biodata: {biodata.id}</p>
+              <p>Diperbarui: {biodata.updated_at}</p>
+              <p>BMI: {bmi || 'Belum dihitung'}</p>
             </div>
           </div>
 
@@ -114,7 +114,7 @@ export default async function ProfilePage() {
               href="/biodata"
               className="text-black border-b border-gray-300 hover:border-black transition-colors pb-1"
             >
-              Edit Information
+              Edit Informasi
             </a>
           </div>
         </div>

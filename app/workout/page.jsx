@@ -1,10 +1,11 @@
 "use client";
 import React, { useState, useEffect, useRef, Suspense } from "react";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 const WorkoutContent = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [currentExercise, setCurrentExercise] = useState(null);
   const [isOverlayVisible, setIsOverlayVisible] = useState(true);
   const [tip, setTip] = useState("");
@@ -236,9 +237,9 @@ const WorkoutContent = () => {
   const tips = [
     "Push yourself, no one else will do it for you!",
     "Consistency beats motivation every time.",
-    "Don’t count the days, make the days count.",
+    "Don't count the days, make the days count.",
     "Small progress is still progress.",
-    "Your body can stand almost anything. It’s your mind you have to convince.",
+    "Your body can stand almost anything. It's your mind you have to convince.",
     "The only bad workout is the one that didn't happen.",
     "Sweat is just your fat crying. Keep going!",
     "Believe in yourself and you will be unstoppable.",
@@ -249,6 +250,15 @@ const WorkoutContent = () => {
     "Hidrasi adalah kunci! Minum air yang cukup, terutama saat cuaca terik.",
     "Pakaian yang tepat membuat perbedaan besar. Kenakan yang ringan saat panas dan anti-air saat hujan ringan.",
   ];
+
+  // Helper function to convert exercise name to URL-friendly format
+  const exerciseNameToUrl = (name) => {
+    return name.toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[()&]/g, '')
+      .replace(/--+/g, '-')
+      .replace(/^-|-$/g, '');
+  };
 
 
   useEffect(() => {
@@ -327,14 +337,16 @@ const WorkoutContent = () => {
 
   const handleNext = () => {
     const idx = exercises.findIndex(ex => ex.id === currentExercise.id);
-    setCurrentExercise(exercises[(idx + 1) % exercises.length]);
+    const nextExercise = exercises[(idx + 1) % exercises.length];
+    const urlFriendlyName = exerciseNameToUrl(nextExercise.name);
+    router.push(`/workout?exercise=${urlFriendlyName}`);
   };
 
   const handlePrev = () => {
     const idx = exercises.findIndex(ex => ex.id === currentExercise.id);
-    setCurrentExercise(
-      exercises[(idx - 1 + exercises.length) % exercises.length]
-    );
+    const prevExercise = exercises[(idx - 1 + exercises.length) % exercises.length];
+    const urlFriendlyName = exerciseNameToUrl(prevExercise.name);
+    router.push(`/workout?exercise=${urlFriendlyName}`);
   };
 
   if (!currentExercise) {
@@ -346,100 +358,179 @@ const WorkoutContent = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="p-4">
-        <h1 className="text-2xl font-bold text-gray-900">
-          {currentExercise.name}
-        </h1>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Header with Back Button */}
+      <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-gray-200">
+        <div className="max-w-4xl mx-auto px-4 py-4">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => router.push('/exercise')}
+              className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              <span className="font-medium">Back to Exercises</span>
+            </button>
+            <div className="flex-1">
+              <h1 className="text-xl md:text-2xl font-bold text-gray-900 truncate">
+                {currentExercise.name}
+              </h1>
+              <div className="flex items-center gap-4 mt-1 text-sm text-gray-600">
+                <span className="flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+                  </svg>
+                  {currentExercise.duration}
+                </span>
+                <span className="flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                  {currentExercise.level}
+                </span>
+                <span className="hidden sm:inline">{currentExercise.focus}</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="p-4 space-y-6">
-        <div className="bg-white rounded-xl p-6 shadow-sm">
-          <div className="relative w-full max-w-2xl mx-auto aspect-video"> {/* Use aspect-video for responsive height */}
-            <div id="ytplayer" className="w-full h-full rounded-xl"></div>
-
+      {/* Main Content */}
+      <div className="max-w-4xl mx-auto p-4 space-y-6">
+        {/* Video Player Section */}
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+          <div className="relative w-full aspect-video">
+            <div id="ytplayer" className="w-full h-full"></div>
+            
             {isOverlayVisible && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-xl">
-                 <button
-                onClick={handlePlay}
-                className="flex items-center justify-center"
-              >
-                <div className="bg-gray-700/70 rounded-full p-6 transition-transform hover:scale-110">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="yellow"
-                    viewBox="0 0 20 22"
-                    strokeWidth={1.5}
-                    className="w-12 h-12"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M5 3l14 9-14 9V3z"
-                    />
-                  </svg>
-                </div>
-              </button>
+              <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                <button
+                  onClick={handlePlay}
+                  className="group flex items-center justify-center transition-all duration-300 hover:scale-110"
+                >
+                  <div className="bg-white/20 backdrop-blur-md rounded-full p-6 group-hover:bg-white/30 transition-all duration-300">
+                    <svg
+                      className="w-16 h-16 text-white ml-1"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
+                </button>
               </div>
             )}
           </div>
+        </div>
 
-          <div className="mt-6 text-gray-700 space-y-2">
-            <p>
-              <span className="font-bold">Duration:</span>{" "}
-              {currentExercise.duration}
-            </p>
-            <p>
-              <span className="font-bold">Level:</span> {currentExercise.level}
-            </p>
-            <p>
-              <span className="font-bold">Focus:</span> {currentExercise.focus}
-            </p>
-            <p className="mt-2 text-gray-600">{currentExercise.description}</p>
+        {/* Exercise Info & Controls */}
+        <div className="bg-white rounded-2xl p-6 shadow-lg">
+          {/* Exercise Description */}
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-3">About This Exercise</h2>
+            <p className="text-gray-600 leading-relaxed">{currentExercise.description}</p>
           </div>
 
-          <div className="text-center mt-4">
-            <div className="w-32 h-32 mx-auto mb-4 flex items-center justify-center overflow-hidden rounded-lg bg-gray-200">
+          {/* Exercise Stats */}
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="text-center p-3 bg-gray-50 rounded-xl">
+              <div className="text-2xl font-bold text-blue-600">{currentExercise.duration}</div>
+              <div className="text-sm text-gray-600">Duration</div>
+            </div>
+            <div className="text-center p-3 bg-gray-50 rounded-xl">
+              <div className="text-2xl font-bold text-green-600">{currentExercise.level}</div>
+              <div className="text-sm text-gray-600">Level</div>
+            </div>
+            <div className="text-center p-3 bg-gray-50 rounded-xl">
+              <div className="text-lg font-bold text-purple-600 truncate">{currentExercise.focus}</div>
+              <div className="text-sm text-gray-600">Focus</div>
+            </div>
+          </div>
+
+          {/* Exercise Image */}
+          <div className="flex justify-center mb-6">
+            <div className="w-24 h-24 md:w-32 md:h-32 rounded-xl overflow-hidden shadow-md">
               <Image
                 src={currentExercise.image}
                 alt={currentExercise.name}
-                width={150}
-                height={150}
-                className="object-cover"
+                width={128}
+                height={128}
+                className="w-full h-full object-cover"
                 unoptimized={true}
               />
             </div>
           </div>
 
-          <p className="italic text-center text-gray-600 mt-4">💡 {tip}</p>
-
-          <div className="flex items-center gap-1 mt-6">
-            {exercises.map((ex) => (
-              <div
-                key={ex.id}
-                className={`h-2 flex-1 rounded-full transition-colors duration-300 ${
-                  ex.id === currentExercise.id ? "bg-yellow-500" : "bg-gray-300"
-                }`}
-              ></div>
-            ))}
+          {/* Motivational Tip */}
+          <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4 mb-6">
+            <div className="flex items-start gap-3">
+              <div className="text-2xl">💡</div>
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-1">Workout Tip</h3>
+                <p className="text-gray-700 italic">{tip}</p>
+              </div>
+            </div>
           </div>
 
-          <div className="flex justify-between mt-6">
+          {/* Progress Indicator */}
+          <div className="mb-6">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm font-medium text-gray-700">Exercise Progress</span>
+              <span className="text-sm text-gray-500">
+                {exercises.findIndex(ex => ex.id === currentExercise.id) + 1} of {exercises.length}
+              </span>
+            </div>
+            <div className="flex items-center gap-1">
+              {exercises.map((ex, index) => (
+                <div
+                  key={ex.id}
+                  className={`h-2 flex-1 rounded-full transition-all duration-500 ${
+                    ex.id === currentExercise.id 
+                      ? "bg-gradient-to-r from-blue-500 to-purple-500" 
+                      : index < exercises.findIndex(e => e.id === currentExercise.id)
+                      ? "bg-green-400"
+                      : "bg-gray-300"
+                  }`}
+                ></div>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation Buttons */}
+          <div className="flex justify-between items-center">
             <button
               onClick={handlePrev}
-              className="px-4 py-2 bg-gray-200 rounded-lg font-semibold text-gray-700 hover:bg-gray-300 transition-colors"
+              className="flex items-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-all duration-200 hover:shadow-md"
             >
-              ⬅ Prev
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Previous
             </button>
+            
+            <button
+              onClick={() => router.push('/exercise')}
+              className="px-6 py-3 text-gray-600 hover:text-gray-900 font-medium rounded-xl hover:bg-gray-100 transition-colors"
+            >
+              All Exercises
+            </button>
+            
             <button
               onClick={handleNext}
-              className="px-4 py-2 bg-yellow-400 rounded-lg font-semibold text-gray-900 hover:bg-yellow-500 transition-colors"
+              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold rounded-xl transition-all duration-200 hover:shadow-lg transform hover:scale-105"
             >
-              Next ➡
+              Next
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
             </button>
           </div>
         </div>
       </div>
+
+      {/* Floating Dock
+      <FloatingDockDemo /> */}
     </div>
   );
 };

@@ -3,7 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { cityList } from '@/data/CityList';
 import Image from 'next/image';
 import WeatherRecommendationBanner from '@/components/WeatherRecommendationBanner';
-import BMKGFooter from '@/components/BMKGFooter'; 
+import BMKGFooter from '@/components/BMKGFooter';
+import { FloatingDockDemo } from '@/components/Dock'; 
 
 const GuestWeatherPage = () => {
   const [weatherData, setWeatherData] = useState(null);
@@ -359,22 +360,29 @@ const GuestWeatherPage = () => {
               <span className="text-sm md:text-base lg:text-base font-medium">{getCurrentCityName()}</span>
             </div>
             <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-medium mb-1 text-gray-800">Hello, good morning </h1>
-            <p className="text-sm md:text-base lg:text-lg text-gray-500 mb-2">Today, {dateString}</p>
+            <p className="text-sm md:text-base lg:text-lg text-gray-500 mb-4">Today, {dateString}</p>
             
-            {/* Guest limitation text - Better mobile positioning */}
-            <div className="bg-orange-50 border border-orange-200 rounded-lg px-3 py-2 mb-4">
-              <p className="text-xs sm:text-sm text-orange-700 font-medium text-center">
-                🔒 Guest Preview - Limited to {GUEST_FORECAST_LIMIT} hours forecast
-              </p>
-            </div>
-            
-            {/* Temperature di pojok kiri dengan bold */}
+            {/* Temperature and Guest Warning Layout */}
             {currentWeather && (
-              <div className="flex items-center space-x-4 mt-4">
-                <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-gray-800">{currentWeather.t}°C</div>
-                <div className="bg-gray-100 rounded-full px-3 py-1.5 md:px-4 md:py-2 flex items-center border border-gray-200">
-                  <span className="text-xs md:text-sm mr-1.5">💧</span>
-                  <span className="text-xs md:text-sm font-semibold text-gray-700">{currentWeather.hu}%</span>
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mt-4">
+                {/* Temperature Section */}
+                <div className="flex items-center space-x-4">
+                  <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-gray-800">{currentWeather.t}°C</div>
+                  <div className="bg-gray-100 rounded-full px-3 py-1.5 md:px-4 md:py-2 flex items-center border border-gray-200">
+                    <span className="text-xs md:text-sm mr-1.5">💧</span>
+                    <span className="text-xs md:text-sm font-semibold text-gray-700">{currentWeather.hu}%</span>
+                  </div>
+                </div>
+                
+                {/* Guest Warning Box - Larger and positioned to the side */}
+                <div className="bg-orange-50 border border-orange-200 rounded-xl px-4 py-3 lg:px-6 lg:py-4 lg:max-w-sm">
+                  <div className="flex items-center justify-center lg:justify-start space-x-2">
+                    <span className="text-lg">🔒</span>
+                    <div>
+                      <p className="text-sm sm:text-base lg:text-sm text-orange-700 font-semibold">Guest Preview</p>
+                      <p className="text-xs sm:text-sm lg:text-xs text-orange-600">Limited to {GUEST_FORECAST_LIMIT} hours forecast</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
@@ -529,6 +537,8 @@ const GuestWeatherPage = () => {
           </div>
         </div>
       </div>
+      
+      <FloatingDockDemo />
       
       <BMKGFooter />
     </div>

@@ -1,7 +1,7 @@
 export default function LocationInfo({ biodata }) {
   return (
     <div className="border border-gray-200 p-8">
-      <h2 className="text-lg font-light mb-6 text-gray-900">Location</h2>
+      <h2 className="text-lg font-light mb-6 text-gray-900">Lokasi</h2>
 
       {biodata.location_name ? (
         <div className="space-y-4">
@@ -14,7 +14,7 @@ export default function LocationInfo({ biodata }) {
 
           {biodata.latitude && biodata.longitude && (
             <div className="text-sm text-gray-600">
-              <p>Coordinates:</p>
+              <p>Koordinat:</p>
               <p className="font-mono text-xs mt-1">
                 {parseFloat(biodata.latitude).toFixed(4)}, {parseFloat(biodata.longitude).toFixed(4)}
               </p>
@@ -23,12 +23,12 @@ export default function LocationInfo({ biodata }) {
         </div>
       ) : (
         <div className="text-center py-8">
-          <p className="text-gray-400 mb-4">No location data</p>
+          <p className="text-gray-400 mb-4">Tidak ada data lokasi</p>
           <a 
             href="/biodata"
             className="text-black border-b border-gray-300 hover:border-black transition-colors pb-1 text-sm"
           >
-            Add Location
+            Tambah Lokasi
           </a>
         </div>
       )}

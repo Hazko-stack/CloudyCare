@@ -18,7 +18,7 @@ export default function Chat() {
           </div>
           <div>
             <h1 className="text-xl font-semibold text-gray-800">CloudyCare AI</h1>
-            <p className="text-sm text-gray-500">Your health assistant</p>
+            <p className="text-sm text-gray-500">Asisten kesehatan Anda</p>
           </div>
         </div>
       </div>
@@ -32,9 +32,9 @@ export default function Chat() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-semibold text-gray-700 mb-2">Welcome to CloudyCare AI</h2>
+            <h2 className="text-2xl font-semibold text-gray-700 mb-2">Selamat datang di CloudyCare AI</h2>
             <p className="text-gray-500 max-w-md">
-              Ask me anything about your health, exercise routines, or wellness tips. I&apos;m here to help!
+              Tanyakan apa saja tentang kesehatan, rutin olahraga, atau tips wellness. Saya siap membantu!
             </p>
           </div>
         ) : (
@@ -90,7 +90,7 @@ export default function Chat() {
             <input
               className="w-full px-4 py-3 pr-12 bg-gray-50 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-500"
               value={input}
-              placeholder="Ask about your health..."
+              placeholder="Tanyakan tentang kesehatan Anda..."
               onChange={e => setInput(e.currentTarget.value)}
               disabled={false}
             />

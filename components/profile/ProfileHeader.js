@@ -18,12 +18,12 @@ export default function ProfileHeader({ user, profile, biodata }) {
         {/* Info */}
         <div className="flex-1 text-center sm:text-left">
           <h1 className="text-3xl font-light text-gray-900 mb-2">
-            {biodata.full_name || profile.full_name || 'Anonymous'}
+            {biodata.full_name || profile.full_name || 'Anonim'}
           </h1>
           
           <div className="space-y-1 text-gray-600">
             {biodata.age && (
-              <p>{biodata.age} years old</p>
+              <p>{biodata.age} tahun</p>
             )}
             {biodata.location_name && (
               <p>{biodata.location_name}</p>

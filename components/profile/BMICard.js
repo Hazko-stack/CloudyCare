@@ -1,16 +1,16 @@
 export default function BMICard({ bmi, biodata }) {
   const getBMICategory = (bmi) => {
-    if (!bmi) return { category: 'Unknown', color: 'gray', description: 'BMI cannot be calculated' }
+    if (!bmi) return { category: 'Tidak Diketahui', color: 'gray', description: 'BMI tidak dapat dihitung' }
     
     const bmiValue = parseFloat(bmi)
     if (bmiValue < 18.5) {
-      return { category: 'Underweight', color: 'blue', description: 'Below normal weight' }
+      return { category: 'Kurus', color: 'blue', description: 'Di bawah berat normal' }
     } else if (bmiValue < 25) {
-      return { category: 'Healthy', color: 'green', description: 'Normal weight range' }
+      return { category: 'Sehat', color: 'green', description: 'Rentang berat normal' }
     } else if (bmiValue < 30) {
-      return { category: 'Overweight', color: 'yellow', description: 'Above normal weight' }
+      return { category: 'Berlebih', color: 'yellow', description: 'Di atas berat normal' }
     } else {
-      return { category: 'Obese', color: 'red', description: 'Significantly above normal' }
+      return { category: 'Obesitas', color: 'red', description: 'Jauh di atas berat normal' }
     }
   }
 
@@ -43,17 +43,17 @@ export default function BMICard({ bmi, biodata }) {
           <div className="grid grid-cols-2 gap-4 pt-4 border-t">
             <div className="text-center">
               <div className="text-2xl font-semibold text-gray-900">{biodata.weight}kg</div>
-              <div className="text-sm text-gray-500">Weight</div>
+              <div className="text-sm text-gray-500">Berat</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-semibold text-gray-900">{biodata.height}cm</div>
-              <div className="text-sm text-gray-500">Height</div>
+              <div className="text-sm text-gray-500">Tinggi</div>
             </div>
           </div>
         ) : (
           <div className="pt-4 border-t">
             <div className="text-gray-500 text-sm">
-              Weight: {biodata.weight || 'Not set'} | Height: {biodata.height || 'Not set'}
+              Berat: {biodata.weight || 'Belum diisi'} | Tinggi: {biodata.height || 'Belum diisi'}
             </div>
           </div>
         )}

@@ -1,65 +1,66 @@
 "use client";
-import React, { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
-import { createClient } from '@/utils/supabase/client';
-import WeatherRecommendationBanner from './WeatherRecommendationBanner'; 
+import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
+import { createClient } from "@/utils/supabase/client";
+import WeatherRecommendationBanner from "./WeatherRecommendationBanner";
 
-import { cityList } from '@/data/CityList';
-const Bmkg  = () => {
+import { cityList } from "@/data/CityList";
+const Bmkg = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [regionCode, setRegionCode] = useState('31.71.03.1001');
+  const [regionCode, setRegionCode] = useState("31.71.03.1001");
   const [currentSlide, setCurrentSlide] = useState(0);
   const chartRef = useRef(null);
-  
+
   // Search location states
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [loadingLocation, setLoadingLocation] = useState(true);
 
   const exerciseSlides = [
     {
       image: "/construction/meme1.jpg",
-      alt: "Exercise Image 1"
-    },
-    {
-      image: "/construction/meme1.jpg", 
-      alt: "Exercise Image 2"
+      alt: "Exercise Image 1",
     },
     {
       image: "/construction/meme1.jpg",
-      alt: "Exercise Image 3"
-    }
+      alt: "Exercise Image 2",
+    },
+    {
+      image: "/construction/meme1.jpg",
+      alt: "Exercise Image 3",
+    },
   ];
 
   // fetch data
   const fetchData = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const response = await fetch(
         `https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4=${regionCode}`,
         {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Accept': 'application/json',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-          }
+            Accept: "application/json",
+            "User-Agent":
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          },
         }
       );
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
-      console.log('Data dari BMKG:', data);
+      console.log("Data dari BMKG:", data);
       setWeatherData(data);
     } catch (err) {
-      setError('Gagal mengambil data cuaca: ' + err.message);
-      console.error('Error:', err);
+      setError("Gagal mengambil data cuaca: " + err.message);
+      console.error("Error:", err);
     } finally {
       setLoading(false);
     }
@@ -75,23 +76,25 @@ const Bmkg  = () => {
     const loadUserLocation = async () => {
       try {
         const supabase = createClient();
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
 
         if (user) {
           const { data: biodata } = await supabase
-            .from('user_biodata')
-            .select('location_adm4, location_name')
-            .eq('user_id', user.id)
+            .from("user_biodata")
+            .select("location_adm4, location_name")
+            .eq("user_id", user.id)
             .single();
 
           if (biodata && biodata.location_adm4) {
             // Set region code dari biodata
             setRegionCode(biodata.location_adm4);
-            console.log('Loaded location from biodata:', biodata.location_name);
+            console.log("Loaded location from biodata:", biodata.location_name);
           }
         }
       } catch (error) {
-        console.error('Error loading user location:', error);
+        console.error("Error loading user location:", error);
       } finally {
         setLoadingLocation(false);
       }
@@ -111,106 +114,106 @@ const Bmkg  = () => {
   // Chart.js effect
   useEffect(() => {
     if (allWeatherData.length > 0 && chartRef.current) {
-      import('chart.js/auto').then((Chart) => {
-        const ctx = chartRef.current.getContext('2d');
-        
+      import("chart.js/auto").then((Chart) => {
+        const ctx = chartRef.current.getContext("2d");
+
         if (ctx.chart) {
           ctx.chart.destroy();
         }
 
-        const chartData = allWeatherData.slice(0, 12).map(weather => ({
-          time: new Date(weather.local_datetime).toLocaleTimeString('id-ID', { 
-            hour: '2-digit', 
-            minute: '2-digit',
-            hour12: false 
+        const chartData = allWeatherData.slice(0, 12).map((weather) => ({
+          time: new Date(weather.local_datetime).toLocaleTimeString("id-ID", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
           }),
           temperature: weather.t,
-          humidity: weather.hu
+          humidity: weather.hu,
         }));
 
         ctx.chart = new Chart.Chart(ctx, {
-          type: 'line',
+          type: "line",
           data: {
-            labels: chartData.map(item => item.time),
+            labels: chartData.map((item) => item.time),
             datasets: [
               {
-                label: 'Temperature (°C)',
-                data: chartData.map(item => item.temperature),
-                borderColor: 'rgb(59, 130, 246)',
-                backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                tension: 0.4,
-                pointRadius: 4,
-                pointHoverRadius: 6
-              },
-              {
-                label: 'Humidity (%)',
-                data: chartData.map(item => item.humidity),
-                borderColor: 'rgb(16, 185, 129)',
-                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                label: "Suhu (°C)",
+                data: chartData.map((item) => item.temperature),
+                borderColor: "rgb(59, 130, 246)",
+                backgroundColor: "rgba(59, 130, 246, 0.1)",
                 tension: 0.4,
                 pointRadius: 4,
                 pointHoverRadius: 6,
-                yAxisID: 'y1'
-              }
-            ]
+              },
+              {
+                label: "Kelembaban (%)",
+                data: chartData.map((item) => item.humidity),
+                borderColor: "rgb(16, 185, 129)",
+                backgroundColor: "rgba(16, 185, 129, 0.1)",
+                tension: 0.4,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                yAxisID: "y1",
+              },
+            ],
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
             interaction: {
-              mode: 'index',
+              mode: "index",
               intersect: false,
             },
             plugins: {
               legend: {
-                position: 'top',
+                position: "top",
               },
               title: {
                 display: true,
-                text: 'Weather Forecast Chart',
+                text: "Grafik Prediksi Cuaca",
                 font: {
-                  size: 16
-                }
-              }
+                  size: 16,
+                },
+              },
             },
             scales: {
               x: {
                 display: true,
                 title: {
                   display: true,
-                  text: 'Time'
-                }
+                  text: "Waktu",
+                },
               },
               y: {
-                type: 'linear',
+                type: "linear",
                 display: true,
-                position: 'left',
+                position: "left",
                 title: {
                   display: true,
-                  text: 'Temperature (°C)'
+                  text: "Suhu (°C)",
                 },
               },
               y1: {
-                type: 'linear',
+                type: "linear",
                 display: true,
-                position: 'right',
+                position: "right",
                 title: {
                   display: true,
-                  text: 'Humidity (%)'
+                  text: "Kelembaban (%)",
                 },
                 grid: {
                   drawOnChartArea: false,
                 },
               },
-            }
-          }
+            },
+          },
         });
       });
     }
 
     return () => {
-      if (chartRef.current?.getContext('2d').chart) {
-        chartRef.current.getContext('2d').chart.destroy();
+      if (chartRef.current?.getContext("2d").chart) {
+        chartRef.current.getContext("2d").chart.destroy();
       }
     };
   }, [weatherData]);
@@ -226,8 +229,8 @@ const Bmkg  = () => {
 
   // Get current city name
   const getCurrentCityName = () => {
-    const city = cityList.find(city => city.adm4 === regionCode);
-    return city ? city.name : 'Kemayoran, Jakarta Pusat';
+    const city = cityList.find((city) => city.adm4 === regionCode);
+    return city ? city.name : "Kemayoran, Jakarta Pusat";
   };
 
   // Filter locations based on search
@@ -250,7 +253,7 @@ const Bmkg  = () => {
 
   // Clear search
   const clearSearch = () => {
-    setSearchQuery('');
+    setSearchQuery("");
     setShowDropdown(false);
   };
 
@@ -259,47 +262,67 @@ const Bmkg  = () => {
     switch (weatherCode) {
       case 0:
       case 1:
-        return '☀️';
+        return "☀️";
       case 2:
-        return '⛅';
+        return "⛅";
       case 3:
-        return '☁️';
+        return "☁️";
       case 4:
-        return '☁️';
+        return "☁️";
       case 5:
-        return '🌫️';
+        return "🌫️";
       case 10:
-        return '🌫️';
+        return "🌫️";
       case 45:
-        return '🌫️';
+        return "🌫️";
       case 60:
       case 61:
-        return '🌦️';
+        return "🌦️";
       case 63:
-        return '🌧️';
+        return "🌧️";
       case 65:
-        return '🌧️';
+        return "🌧️";
       case 80:
-        return '🌦️';
+        return "🌦️";
       case 95:
       case 97:
-        return '⛈️';
+        return "⛈️";
       default:
-        return desc?.toLowerCase().includes('cerah') ? '☀️' : 
-               desc?.toLowerCase().includes('berawan') ? '☁️' :
-               desc?.toLowerCase().includes('hujan') ? '🌧️' : '🌤️';
+        return desc?.toLowerCase().includes("cerah")
+          ? "☀️"
+          : desc?.toLowerCase().includes("berawan")
+          ? "☁️"
+          : desc?.toLowerCase().includes("hujan")
+          ? "🌧️"
+          : "🌤️";
+    }
+  };
+
+  const getWeatherGif = (weather) => {
+    switch (weather) {
+      case "rain":
+      case "rainy":
+        return "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNWhleGd1YWZxYjN1aXJrdDR2Zmk4eTFsdW1kejR5M2QyM3htYnM0MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/5W5TOAKuoZfa0/giphy.gif";
+      case "clouds":
+      case "cloudy":
+        return "https://media1.giphy.com/media/0Tdcu6hULgWAgyyR6c/giphy.gif";
+      case "clear":
+      case "sunny":
+        return "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExb3F2ZDZvMGV2bTRxNmlweGJrN3Rla3BkaDRmNndkaGZlaWtpcDJoNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/0Tdcu6hULgWAgyyR6c/giphy.gif";
+      default:
+        return "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcjlyOXZyM3VsZ2U4MzdpNDBocmM1eG5ybmk1Z3F1eDlncDg5N2p5MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/VdKDSIL8ahhJ9fl3XT/giphy.gif";
     }
   };
 
   // Get all weather data
   const getAllWeatherData = () => {
     if (!weatherData?.data?.[0]?.cuaca) return [];
-    
+
     const allData = [];
-    weatherData.data[0].cuaca.forEach(dayData => {
+    weatherData.data[0].cuaca.forEach((dayData) => {
       allData.push(...dayData);
     });
-    
+
     return allData.sort((a, b) => {
       const timeA = new Date(a.local_datetime).getTime();
       const timeB = new Date(b.local_datetime).getTime();
@@ -310,37 +333,92 @@ const Bmkg  = () => {
   const allWeatherData = getAllWeatherData();
   const currentWeather = allWeatherData[0];
   const currentTime = new Date();
-  const dateString = currentTime.toLocaleDateString('id-ID', { 
-    weekday: 'long', 
-    day: '2-digit',
-    month: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit'
+  const dateString = currentTime.toLocaleDateString("id-ID", {
+    weekday: "long",
+    day: "2-digit",
+    month: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
   });
+
+  // Dynamic greeting based on current time
+  const getGreeting = () => {
+    const hour = currentTime.getHours();
+    
+    if (hour >= 5 && hour < 12) {
+      return "Halo, selamat pagi";
+    } else if (hour >= 12 && hour < 15) {
+      return "Halo, selamat siang";
+    } else if (hour >= 15 && hour < 18) {
+      return "Halo, selamat sore";
+    } else {
+      return "Halo, selamat malam";
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white p-0 md:p-4 lg:p-8">
       <div className="max-w-sm sm:max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl mx-auto min-h-screen sm:min-h-0 bg-white rounded-none sm:rounded-3xl overflow-hidden shadow-none sm:shadow-lg">
-        
         {/* Header */}
         <div className="bg-white px-4 sm:px-6 md:px-10 lg:px-12 xl:px-16 pt-8 sm:pt-10 md:pt-14 lg:pt-16 pb-6 sm:pb-8 md:pb-10 lg:pb-12 text-gray-800 relative rounded-none sm:rounded-t-3xl">
-          
           <div className="mb-6 md:mb-8 lg:mb-10">
             <div className="flex items-center text-gray-600 mb-2">
-              <svg className="w-4 h-4 md:w-5 md:h-5 lg:w-5 lg:h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+              <svg
+                className="w-4 h-4 md:w-5 md:h-5 lg:w-5 lg:h-5 mr-2"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
               </svg>
-              <span className="text-sm md:text-base lg:text-base font-medium">{getCurrentCityName()}</span>
+              <span className="text-sm md:text-base lg:text-base font-medium">
+                {getCurrentCityName()}
+              </span>
             </div>
-            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-medium mb-1 text-gray-800">Hello, good morning </h1>
-            <p className="text-sm md:text-base lg:text-lg text-gray-500 mb-4">Today, {dateString}</p>
-            
+            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-medium mb-1 text-gray-800">
+              {getGreeting()}{" "}
+            </h1>
+            <p className="text-sm md:text-base lg:text-lg text-gray-500 mb-4">
+              Hari ini, {dateString}
+            </p>
+
             {currentWeather && (
-              <div className="flex items-center space-x-4">
-                <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-gray-800">{currentWeather.t}°C</div>
-                <div className="bg-gray-100 rounded-full px-3 py-1.5 md:px-4 md:py-2 flex items-center border border-gray-200">
-                  <span className="text-xs md:text-sm mr-1.5">💧</span>
-                  <span className="text-xs md:text-sm font-semibold text-gray-700">{currentWeather.hu}%</span>
+              <div className="flex items-center justify-between space-x-8">
+                {/* Weather Info */}
+                <div className="flex items-center space-x-4">
+                  <div className="text-6xl font-bold text-gray-800">
+                    {currentWeather.t}°C
+                  </div>
+                  <div className="bg-gray-100 rounded-full px-4 py-2 flex items-center border border-gray-200">
+                    <span className="mr-1.5">💧</span>
+                    <span className="font-semibold text-gray-700">
+                      {currentWeather.hu}%
+                    </span>
+                  </div>
+                </div>
+
+                {/* Weather GIF */}
+                <div className="hidden sm:block relative">
+                  <div className="relative group">
+                    {/* Background Glow Effect */}
+                    <div className="absolute -inset-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 rounded-3xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+                    
+                    {/* Main GIF Container */}
+                    <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-3 shadow-2xl border border-white/20">
+                      <img
+                        src={getWeatherGif(currentWeather.weather)}
+                        alt="Animasi cuaca"
+                        className="w-48 h-48 sm:w-52 sm:h-52 md:w-56 md:h-56 lg:w-64 lg:h-64 object-contain rounded-2xl group-hover:scale-110 transition-all duration-500 ease-out"
+                      />
+                      
+                      {/* Weather Status Badge */}
+                      <div className="absolute -bottom-2 -right-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg border-2 border-white">
+                        <span className="mr-1">
+                          {getWeatherIcon(currentWeather.weather, currentWeather.weather_desc)}
+                        </span>
+                        {currentWeather.weather_desc || 'Live'}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
@@ -349,7 +427,6 @@ const Bmkg  = () => {
 
         {/* Content */}
         <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16">
-          
           <div className="mb-6 md:mb-8 lg:mb-10">
             <WeatherRecommendationBanner weatherData={allWeatherData} />
           </div>
@@ -365,7 +442,9 @@ const Bmkg  = () => {
 
           {/* Question */}
           <div className="mb-4 sm:mb-6 md:mb-8 lg:mb-10">
-            <h2 className="text-gray-700 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-medium text-center">How's the temperature today?</h2>
+            <h2 className="text-gray-700 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-medium text-center">
+              Bagaimana suhu hari ini?
+            </h2>
           </div>
 
           {/* Loading State */}
@@ -373,7 +452,9 @@ const Bmkg  = () => {
             <div className="flex justify-center items-center py-8 md:py-10 lg:py-12">
               <div className="flex items-center space-x-3">
                 <div className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 border-2 sm:border-3 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                <span className="text-gray-600 text-sm sm:text-base md:text-lg">Mengambil data cuaca...</span>
+                <span className="text-gray-600 text-sm sm:text-base md:text-lg">
+                  Mengambil data cuaca...
+                </span>
               </div>
             </div>
           )}
@@ -389,25 +470,40 @@ const Bmkg  = () => {
           {allWeatherData.length > 0 && !loading && (
             <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2 sm:gap-3 md:gap-4 lg:gap-6 xl:gap-8 mb-4 sm:mb-6 md:mb-8 lg:mb-10">
               {allWeatherData
-                .slice(0, typeof window !== 'undefined' && window.innerWidth >= 1536 ? 8 : typeof window !== 'undefined' && window.innerWidth >= 1024 ? 6 : typeof window !== 'undefined' && window.innerWidth >= 768 ? 5 : 4)
+                .slice(
+                  0,
+                  typeof window !== "undefined" && window.innerWidth >= 1536
+                    ? 8
+                    : typeof window !== "undefined" && window.innerWidth >= 1024
+                    ? 6
+                    : typeof window !== "undefined" && window.innerWidth >= 768
+                    ? 5
+                    : 4
+                )
                 .map((weather, index) => {
                   const date = new Date(weather.local_datetime);
-                  const timeString = date.toLocaleTimeString('id-ID', { 
-                    hour: '2-digit', 
-                    minute: '2-digit',
-                    hour12: false 
+                  const timeString = date.toLocaleTimeString("id-ID", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false,
                   });
-                  const dateString = date.toLocaleDateString('id-ID', { 
-                    weekday: 'short',
-                    day: '2-digit',
-                    month: 'short'
+                  const dateString = date.toLocaleDateString("id-ID", {
+                    weekday: "short",
+                    day: "2-digit",
+                    month: "short",
                   });
-                  
+
                   return (
-                    <div key={`${weather.local_datetime}-${index}`} className="text-center">
+                    <div
+                      key={`${weather.local_datetime}-${index}`}
+                      className="text-center"
+                    >
                       <div className="bg-gray-50 hover:bg-gray-100 rounded-xl sm:rounded-2xl md:rounded-2xl lg:rounded-3xl p-2 sm:p-3 md:p-4 lg:p-6 xl:p-8 mb-2 md:mb-3 lg:mb-4 transition-colors border border-gray-100 shadow-sm">
                         <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl mb-1 md:mb-2 lg:mb-3">
-                          {getWeatherIcon(weather.weather, weather.weather_desc)}
+                          {getWeatherIcon(
+                            weather.weather,
+                            weather.weather_desc
+                          )}
                         </div>
                       </div>
                       <div className="text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-semibold text-gray-700 mb-1 md:mb-1.5 lg:mb-2">
@@ -429,19 +525,29 @@ const Bmkg  = () => {
           <div className="mb-4 sm:mb-6 md:mb-8 lg:mb-10">
             <div className="max-w-md md:max-w-lg mx-auto">
               <label className="block text-gray-700 text-sm md:text-base lg:text-base font-medium mb-2">
-                Choose Location:
+                Pilih Lokasi:
               </label>
-              
+
               {/* Search Input */}
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  <svg
+                    className="h-5 w-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
                   </svg>
                 </div>
                 <input
                   type="text"
-                  placeholder="Search location..."
+                  placeholder="Cari lokasi..."
                   value={searchQuery}
                   onChange={handleSearchChange}
                   onFocus={() => setShowDropdown(true)}
@@ -452,8 +558,18 @@ const Bmkg  = () => {
                     onClick={clearSearch}
                     className="absolute inset-y-0 right-0 pr-3 flex items-center"
                   >
-                    <svg className="h-5 w-5 text-gray-400 hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    <svg
+                      className="h-5 w-5 text-gray-400 hover:text-gray-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
                     </svg>
                   </button>
                 )}
@@ -469,11 +585,28 @@ const Bmkg  = () => {
                       onClick={() => handleLocationSelect(location)}
                     >
                       <div className="flex items-center">
-                        <svg className="h-4 w-4 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <svg
+                          className="h-4 w-4 text-gray-400 mr-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                          />
                         </svg>
-                        <span className="text-gray-900 text-sm md:text-base">{location.name}</span>
+                        <span className="text-gray-900 text-sm md:text-base">
+                          {location.name}
+                        </span>
                       </div>
                     </div>
                   ))}
@@ -481,22 +614,36 @@ const Bmkg  = () => {
               )}
 
               {/* No Results */}
-              {showDropdown && searchQuery && filteredLocations.length === 0 && (
-                <div className="mt-2 bg-white border border-gray-300 rounded-lg shadow-lg p-4">
-                  <div className="text-gray-500 text-center text-sm">
-                    No location found for "{searchQuery}"
+              {showDropdown &&
+                searchQuery &&
+                filteredLocations.length === 0 && (
+                  <div className="mt-2 bg-white border border-gray-300 rounded-lg shadow-lg p-4">
+                    <div className="text-gray-500 text-center text-sm">
+                      Tidak ada lokasi yang ditemukan untuk "{searchQuery}"
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {/* Selected Location Display */}
               {!searchQuery && getCurrentCityName() && (
                 <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
                   <div className="flex items-center">
-                    <svg className="h-5 w-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    <svg
+                      className="h-5 w-5 text-blue-600 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
-                    <span className="text-blue-800 font-medium text-sm md:text-base">Current location: {getCurrentCityName()}</span>
+                    <span className="text-blue-800 font-medium text-sm md:text-base">
+                      Lokasi saat ini: {getCurrentCityName()}
+                    </span>
                   </div>
                 </div>
               )}
