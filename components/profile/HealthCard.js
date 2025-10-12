@@ -260,7 +260,7 @@ export default function HealthRecommendationBanner({ biodata }) {
           <div className="flex-grow mb-4">
             <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4">
               <div className="flex items-start gap-2 mb-2">
-                <div className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xs">
+                <div className="flex-shrink-0 w-6 h-6 bg-accent text-white rounded-full flex items-center justify-center font-bold text-xs">
                   {currentIndex + 1}
                 </div>
                 <h4 className="text-lg md:text-xl font-bold text-gray-800 leading-tight">
@@ -289,7 +289,7 @@ export default function HealthRecommendationBanner({ biodata }) {
                 onClick={() => goToSlide(index)}
                 className={`transition-all duration-300 rounded-full ${
                   index === currentIndex 
-                    ? 'w-8 h-2 bg-blue-600' 
+                    ? 'w-8 h-2 bg-primary' 
                     : 'w-2 h-2 bg-gray-300 hover:bg-gray-400'
                 }`}
                 aria-label={`Go to recommendation ${index + 1}`}
@@ -299,7 +299,7 @@ export default function HealthRecommendationBanner({ biodata }) {
 
           <div className="mt-3 h-1 bg-gray-200 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-blue-600 rounded-full transition-all"
+              className="h-full bg-primary rounded-full transition-all"
               style={{ 
                 animation: `progress 6000ms linear`,
                 width: '100%'

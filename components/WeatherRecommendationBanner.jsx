@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 
-// Data rekomendasi berdasarkan kondisi cuaca
 const weatherRecommendations = {
   sunny: {
     title: "Cuaca Cerah",
@@ -71,7 +70,7 @@ const weatherRecommendations = {
   }
 };
 
-// Helper function untuk menentukan tipe cuaca dari weather code
+
 const getWeatherTypeFromCode = (weatherCode, weatherDesc = '') => {
   if ([0, 1].includes(weatherCode)) return 'sunny';
   if ([60, 61, 63, 65, 80, 95, 97].includes(weatherCode)) return 'rainy';
@@ -89,7 +88,6 @@ const WeatherRecommendationBanner = ({ weatherData = null, showHourSelector = tr
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedHour, setSelectedHour] = useState(0);
 
-  // Tentukan tipe cuaca berdasarkan jam yang dipilih
   let weatherType = 'cloudy';
   let selectedWeatherData = null;
   
@@ -101,7 +99,6 @@ const WeatherRecommendationBanner = ({ weatherData = null, showHourSelector = tr
   const weatherInfo = weatherRecommendations[weatherType];
   const recommendations = weatherInfo.recommendations;
 
-  // Auto slide effect
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % recommendations.length);
@@ -110,7 +107,6 @@ const WeatherRecommendationBanner = ({ weatherData = null, showHourSelector = tr
     return () => clearInterval(timer);
   }, [recommendations.length]);
 
-  // Reset slide index ketika ganti jam
   useEffect(() => {
     setCurrentIndex(0);
   }, [selectedHour]);
@@ -123,9 +119,8 @@ const WeatherRecommendationBanner = ({ weatherData = null, showHourSelector = tr
 
   return (
     <div className="space-y-4">
-      {/* Hour Selector */}
       {showHourSelector && weatherData && weatherData.length > 1 && (
-        <div className="bg-white rounded-2xl p-4 shadow-md">
+        <div className="bg-background rounded-2xl p-4 shadow-md">
           <div className="flex items-center gap-2 mb-3">
             <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -149,7 +144,7 @@ const WeatherRecommendationBanner = ({ weatherData = null, showHourSelector = tr
                   onClick={() => setSelectedHour(index)}
                   className={`flex-shrink-0 rounded-xl p-3 transition-all transform hover:scale-105 ${
                     isSelected 
-                      ? 'bg-blue-600 text-white shadow-lg scale-105' 
+                      ? 'bg-accent text-white shadow-lg scale-105' 
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
@@ -173,8 +168,7 @@ const WeatherRecommendationBanner = ({ weatherData = null, showHourSelector = tr
         </div>
       )}
 
-      {/* Recommendation Banner */}
-      <div className="relative rounded-2xl lg:rounded-3xl overflow-hidden bg-white shadow-lg">
+      <div className="relative rounded-2xl lg:rounded-3xl overflow-hidden bg-primary shadow-lg">
         {/* Background Gradient */}
         <div className={`absolute inset-0 bg-gradient-to-r ${weatherInfo.color} opacity-10`}></div>
         
@@ -241,7 +235,7 @@ const WeatherRecommendationBanner = ({ weatherData = null, showHourSelector = tr
           {/* Progress Bar */}
           <div className="mt-4 h-1 bg-gray-200 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-blue-600 rounded-full transition-all"
+              className="h-full bg-accent rounded-full transition-all"
               style={{ 
                 animation: `progress 5000ms linear`,
                 width: '100%'

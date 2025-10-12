@@ -10,8 +10,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // Optional: jika pakai MDX files locally (tidak perlu untuk Supabase storage)
-  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
 };
 
 export default nextConfig;

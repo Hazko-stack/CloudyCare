@@ -1,6 +1,6 @@
 export default function LocationInfo({ biodata }) {
   return (
-    <div className="border border-gray-200 p-8">
+    <div className="bg-primary border border-gray-200 p-8">
       <h2 className="text-lg font-light mb-6 text-gray-900">Lokasi</h2>
 
       {biodata.location_name ? (

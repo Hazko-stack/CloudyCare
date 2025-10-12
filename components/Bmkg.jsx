@@ -13,27 +13,12 @@ const Bmkg = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const chartRef = useRef(null);
 
-  // Search location states
+
   const [searchQuery, setSearchQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [loadingLocation, setLoadingLocation] = useState(true);
 
-  const exerciseSlides = [
-    {
-      image: "/construction/meme1.jpg",
-      alt: "Exercise Image 1",
-    },
-    {
-      image: "/construction/meme1.jpg",
-      alt: "Exercise Image 2",
-    },
-    {
-      image: "/construction/meme1.jpg",
-      alt: "Exercise Image 3",
-    },
-  ];
 
-  // fetch data
   const fetchData = async () => {
     setLoading(true);
     setError(null);
@@ -66,12 +51,12 @@ const Bmkg = () => {
     }
   };
 
-  // Load data saat component mount
+
   useEffect(() => {
     fetchData();
   }, []);
 
-  // Fetch user biodata location on mount
+
   useEffect(() => {
     const loadUserLocation = async () => {
       try {
@@ -88,7 +73,7 @@ const Bmkg = () => {
             .single();
 
           if (biodata && biodata.location_adm4) {
-            // Set region code dari biodata
+
             setRegionCode(biodata.location_adm4);
             console.log("Loaded location from biodata:", biodata.location_name);
           }
@@ -103,15 +88,13 @@ const Bmkg = () => {
     loadUserLocation();
   }, []);
 
-  // Fetch data when region changes
   useEffect(() => {
-    // Only fetch if location is loaded
     if (regionCode && !loadingLocation) {
       fetchData();
     }
   }, [regionCode, loadingLocation]);
 
-  // Chart.js effect
+
   useEffect(() => {
     if (allWeatherData.length > 0 && chartRef.current) {
       import("chart.js/auto").then((Chart) => {
@@ -218,40 +201,30 @@ const Bmkg = () => {
     };
   }, [weatherData]);
 
-  // Auto slide effect
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % exerciseSlides.length);
-    }, 3000);
 
-    return () => clearInterval(timer);
-  }, []);
-
-  // Get current city name
   const getCurrentCityName = () => {
     const city = cityList.find((city) => city.adm4 === regionCode);
     return city ? city.name : "Kemayoran, Jakarta Pusat";
   };
 
-  // Filter locations based on search
+
   const filteredLocations = cityList.filter((location) =>
     location.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Handle location select
+
   const handleLocationSelect = (location) => {
     setRegionCode(location.adm4);
     setSearchQuery(location.name);
     setShowDropdown(false);
   };
 
-  // Handle search input change
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
     setShowDropdown(true);
   };
 
-  // Clear search
+ 
   const clearSearch = () => {
     setSearchQuery("");
     setShowDropdown(false);
@@ -314,7 +287,6 @@ const Bmkg = () => {
     }
   };
 
-  // Get all weather data
   const getAllWeatherData = () => {
     if (!weatherData?.data?.[0]?.cuaca) return [];
 
@@ -341,7 +313,6 @@ const Bmkg = () => {
     minute: "2-digit",
   });
 
-  // Dynamic greeting based on current time
   const getGreeting = () => {
     const hour = currentTime.getHours();
     
@@ -357,10 +328,10 @@ const Bmkg = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white p-0 md:p-4 lg:p-8">
+    <div className="min-h-screen bg-background p-0 md:p-4 lg:p-8">
       <div className="max-w-sm sm:max-w-lg md:max-w-3xl lg:max-w-5xl xl:max-w-7xl mx-auto min-h-screen sm:min-h-0 bg-white rounded-none sm:rounded-3xl overflow-hidden shadow-none sm:shadow-lg">
         {/* Header */}
-        <div className="bg-white px-4 sm:px-6 md:px-10 lg:px-12 xl:px-16 pt-8 sm:pt-10 md:pt-14 lg:pt-16 pb-6 sm:pb-8 md:pb-10 lg:pb-12 text-gray-800 relative rounded-none sm:rounded-t-3xl">
+        <div className="bg-accent px-4 sm:px-6 md:px-10 lg:px-12 xl:px-16 pt-8 sm:pt-10 md:pt-14 lg:pt-16 pb-6 sm:pb-8 md:pb-10 lg:pb-12 text-gray-800 relative rounded-none sm:rounded-t-3xl">
           <div className="mb-6 md:mb-8 lg:mb-10">
             <div className="flex items-center text-gray-600 mb-2">
               <svg
@@ -383,7 +354,6 @@ const Bmkg = () => {
 
             {currentWeather && (
               <div className="flex items-center justify-between space-x-8">
-                {/* Weather Info */}
                 <div className="flex items-center space-x-4">
                   <div className="text-6xl font-bold text-gray-800">
                     {currentWeather.t}°C
@@ -396,21 +366,17 @@ const Bmkg = () => {
                   </div>
                 </div>
 
-                {/* Weather GIF */}
                 <div className="hidden sm:block relative">
                   <div className="relative group">
-                    {/* Background Glow Effect */}
                     <div className="absolute -inset-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 rounded-3xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
                     
-                    {/* Main GIF Container */}
                     <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-3 shadow-2xl border border-white/20">
                       <img
                         src={getWeatherGif(currentWeather.weather)}
                         alt="Animasi cuaca"
                         className="w-48 h-48 sm:w-52 sm:h-52 md:w-56 md:h-56 lg:w-64 lg:h-64 object-contain rounded-2xl group-hover:scale-110 transition-all duration-500 ease-out"
                       />
-                      
-                      {/* Weather Status Badge */}
+
                       <div className="absolute -bottom-2 -right-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg border-2 border-white">
                         <span className="mr-1">
                           {getWeatherIcon(currentWeather.weather, currentWeather.weather_desc)}
@@ -440,7 +406,6 @@ const Bmkg = () => {
             </div>
           </div>
 
-          {/* Question */}
           <div className="mb-4 sm:mb-6 md:mb-8 lg:mb-10">
             <h2 className="text-gray-700 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-medium text-center">
               Bagaimana suhu hari ini?
@@ -577,11 +542,11 @@ const Bmkg = () => {
 
               {/* Dropdown Results */}
               {showDropdown && searchQuery && filteredLocations.length > 0 && (
-                <div className="mt-2 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto absolute z-10 w-full max-w-md md:max-w-lg">
+                <div className="mt-2 bg-accent border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto absolute z-10 w-full max-w-md md:max-w-lg">
                   {filteredLocations.slice(0, 10).map((location, index) => (
                     <div
                       key={`${location.adm4}-${index}`}
-                      className="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                      className="px-4 py-3 hover:bg-background cursor-pointer border-b border-gray-100 last:border-b-0"
                       onClick={() => handleLocationSelect(location)}
                     >
                       <div className="flex items-center">
@@ -613,7 +578,7 @@ const Bmkg = () => {
                 </div>
               )}
 
-              {/* No Results */}
+            
               {showDropdown &&
                 searchQuery &&
                 filteredLocations.length === 0 && (
@@ -624,7 +589,7 @@ const Bmkg = () => {
                   </div>
                 )}
 
-              {/* Selected Location Display */}
+            
               {!searchQuery && getCurrentCityName() && (
                 <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
                   <div className="flex items-center">

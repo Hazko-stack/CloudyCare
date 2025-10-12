@@ -76,7 +76,7 @@ export default async function ProfilePage() {
 
   return (
     <>
-      <div className="min-h-screen bg-white pb-20">
+      <div className="min-h-screen bg-background pb-20">
         <div className="max-w-6xl mx-auto px-6 py-8">
           {/* <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
             <h3 className="font-semibold text-blue-800 mb-2">Debug Info:</h3>

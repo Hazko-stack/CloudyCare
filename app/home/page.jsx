@@ -113,7 +113,7 @@ export default function HomePage() {
   return (
     <React.Fragment>
       <main className="relative pb-32">
-        <div className="bg-black text-white p-3 flex justify-between items-center">
+        <div className="bg-primary text-text-base p-3 flex justify-between items-center">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
               <span className="text-sm font-medium">

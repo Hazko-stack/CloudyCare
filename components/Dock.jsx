@@ -13,7 +13,7 @@ export function FloatingDockDemo() {
     {
       title: "Home",
       icon: (
-        <IconHome className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <IconHome className="h-full w-full bg text-neutral-500 dark:text-neutral-300" />
       ),
       href: "/home",
     },

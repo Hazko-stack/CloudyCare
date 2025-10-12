@@ -43,6 +43,14 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+@theme {
+   --color-primary: #FFD658;
+   --color-text-base: #1F1F1F;
+   --color-background: #E0E3E9;
+   --color-accent: #9ACDAB;
+   --color-brand-dark: #305241;
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

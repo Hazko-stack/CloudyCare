@@ -287,7 +287,7 @@ const ExerciseSelectionPage = () => {
       onClick={() => setSelectedExercise(exercise.id)}
       className={`
         w-[calc(50%-8px)] sm:w-44 md:w-52 lg:w-56
-        bg-white
+        bg-accent
         rounded-xl 
         cursor-pointer 
         overflow-hidden
@@ -295,7 +295,7 @@ const ExerciseSelectionPage = () => {
         duration-300
         ${
           selectedExercise === exercise.id
-            ? "ring-4 ring-blue-500 shadow-xl scale-105"
+            ? "ring-4 ring-primary shadow-xl scale-105"
             : "hover:shadow-xl hover:scale-102"
         }
       `}
@@ -336,7 +336,7 @@ const ExerciseSelectionPage = () => {
         </div>
       </div>
 
-      <div className="p-3 bg-white">
+      <div className="p-3 bg-accent">
         <h3 className="text-sm font-semibold text-gray-900 mb-1 line-clamp-2">
           {exercise.name}
         </h3>
@@ -455,7 +455,7 @@ const ExerciseSelectionPage = () => {
               Recommended
             </h2>
             <p className="text-sm text-gray-600 mb-4">
-              The weather's cloudy, so this is a recommend workout or exercise for u
+              This is a recommend workout or exercise for u
             </p>
             <div className="flex gap-4 flex-wrap">
               {recommendedExercises.map((exercise) => (
@@ -535,17 +535,6 @@ const ExerciseSelectionPage = () => {
             </div>
           </div>
         )}
-      </div>
-
-      {/* Floating Dock - Always Visible */}
-      <div 
-        className={`fixed z-50 transition-all duration-300 ease-in-out ${
-          selectedExercise 
-            ? 'bottom-24 left-1/2 transform -translate-x-1/2' 
-            : 'bottom-4 left-1/2 transform -translate-x-1/2'   
-        }`}
-      >
-        <FloatingDockDemo />
       </div>
     </>
   );

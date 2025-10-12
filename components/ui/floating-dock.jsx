@@ -32,7 +32,7 @@ const FloatingDockMobile = ({
       onMouseMove={(e) => mouseX.set(e.pageX)}
       onMouseLeave={() => mouseX.set(Infinity)}
       className={cn(
-        "mx-auto flex h-12 items-end gap-2 rounded-2xl bg-gray-50 px-2 pb-2 md:hidden dark:bg-neutral-900",
+        "mx-auto flex h-12 items-end gap-2 rounded-4xl bg-accent px-2 pb-2 md:hidden dark:bg-neutral-900",
         className
       )}>
       {items.map((item) => (
@@ -52,7 +52,7 @@ const FloatingDockDesktop = ({
       onMouseMove={(e) => mouseX.set(e.pageX)}
       onMouseLeave={() => mouseX.set(Infinity)}
       className={cn(
-        "mx-auto hidden h-16 items-end gap-4 rounded-2xl bg-gray-50 px-4 pb-3 md:flex dark:bg-neutral-900",
+        "mx-auto hidden h-16 items-end gap-4 rounded-4xl bg-accent px-4 pb-3 md:flex dark:bg-neutral-900",
         className
       )}>
       {items.map((item) => (
@@ -111,7 +111,7 @@ function IconContainer({
         style={{ width, height }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="relative flex aspect-square items-center justify-center rounded-full bg-gray-200 dark:bg-neutral-800">
+        className="relative flex aspect-square items-center justify-center rounded-full bg-primary dark:bg-neutral-800">
         <AnimatePresence>
           {hovered && (
             <motion.div
@@ -133,7 +133,7 @@ function IconContainer({
   );
 }
 
-// Mobile version with smaller size but same horizontal layout
+
 function IconContainerMobile({
   mouseX,
   title,
@@ -184,7 +184,7 @@ function IconContainerMobile({
         style={{ width, height }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="relative flex aspect-square items-center justify-center rounded-full bg-gray-200 dark:bg-neutral-800">
+        className="relative flex aspect-square items-center justify-center rounded-full bg-primary dark:bg-neutral-800">
         <AnimatePresence>
           {hovered && (
             <motion.div

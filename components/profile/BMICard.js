@@ -17,7 +17,7 @@ export default function BMICard({ bmi, biodata }) {
   const bmiInfo = getBMICategory(bmi)
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6">
+    <div className="bg-accent rounded-lg shadow-sm p-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold">BMI</h3>
         <div className={`px-3 py-1 rounded-full text-sm font-medium ${
@@ -25,7 +25,7 @@ export default function BMICard({ bmi, biodata }) {
           bmiInfo.color === 'yellow' ? 'bg-yellow-100 text-yellow-800' :
           bmiInfo.color === 'red' ? 'bg-red-100 text-red-800' :
           bmiInfo.color === 'blue' ? 'bg-blue-100 text-blue-800' :
-          'bg-gray-100 text-gray-800'
+          'bg-background text-text-base'
         }`}>
           {bmiInfo.category}
         </div>

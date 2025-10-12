@@ -358,9 +358,9 @@ const WorkoutContent = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-background">
       {/* Header with Back Button */}
-      <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-gray-200">
+      <div className="sticky top-0 z-10 bg-background backdrop-blur-md border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
             <button
@@ -425,7 +425,7 @@ const WorkoutContent = () => {
         </div>
 
         {/* Exercise Info & Controls */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg">
+        <div className="bg-accent rounded-2xl p-6 shadow-lg">
           {/* Exercise Description */}
           <div className="mb-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-3">About This Exercise</h2>
@@ -487,10 +487,10 @@ const WorkoutContent = () => {
                   key={ex.id}
                   className={`h-2 flex-1 rounded-full transition-all duration-500 ${
                     ex.id === currentExercise.id 
-                      ? "bg-gradient-to-r from-blue-500 to-purple-500" 
+                      ? "bg-yellow-600" 
                       : index < exercises.findIndex(e => e.id === currentExercise.id)
-                      ? "bg-green-400"
-                      : "bg-gray-300"
+                      ? "bg-primary"
+                      : "bg-background"
                   }`}
                 ></div>
               ))}
@@ -528,9 +528,6 @@ const WorkoutContent = () => {
           </div>
         </div>
       </div>
-
-      {/* Floating Dock
-      <FloatingDockDemo /> */}
     </div>
   );
 };
