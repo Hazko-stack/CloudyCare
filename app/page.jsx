@@ -333,7 +333,7 @@ const GuestWeatherPage = () => {
           </div>
         </div>
 
-        <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 bg-primary">
+        <div className="p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16">
           {allWeatherData.length > 0 && !loading && (
             <div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-6 xl:gap-8 mb-4 sm:mb-6 md:mb-8 lg:mb-10">
@@ -372,7 +372,7 @@ const GuestWeatherPage = () => {
                     );
                   })}
               </div>
-              <div className="bg-accent rounded-2xl p-6 text-center border border-blue-200">
+              <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 text-center border border-blue-200">
                 <div className="text-3xl mb-3">🌟</div>
                 <h3 className="text-lg font-bold text-gray-800 mb-2">Want to see more?</h3>
                 <p className="text-gray-600 text-sm mb-4">
@@ -397,7 +397,7 @@ const GuestWeatherPage = () => {
           )}
           <div className="mb-6 md:mb-8 lg:mb-10">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
-              <h3 className="bg-accent rounded-lg text-lg md:text-xl font-semibold text-text-base">Weather Forecast Chart</h3>
+              <h3 className="text-lg md:text-xl font-semibold text-gray-800">Weather Forecast Chart</h3>
               <div className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap">
                 Guest: {GUEST_FORECAST_LIMIT}h only
               </div>

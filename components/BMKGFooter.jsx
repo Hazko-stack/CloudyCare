@@ -1,15 +1,15 @@
 "use client";
 import React from 'react';
 
-const BMKGFooter = ({ 
+const BMKGFooter = ({
   className = "",
   showUpdateInfo = true,
   showAppBranding = true,
-  variant = "default" 
+  variant = "default"
 }) => {
   const variants = {
     default: {
-      container: "bg-accent border-t border-gray-200 py-6 mt-8",
+      container: "bg-accent border-t border-gray-200 py-6 mt-8 mb-24",
       wrapper: "max-w-7xl mx-auto px-4 text-center",
       mainText: "flex flex-col sm:flex-row items-center justify-center gap-2 text-sm text-gray-600",
       link: "font-semibold text-blue-600 hover:text-blue-800 transition-colors",
@@ -17,7 +17,7 @@ const BMKGFooter = ({
       branding: "text-xs text-gray-400 mt-2"
     },
     minimal: {
-      container: "py-4",
+      container: "py-4 mb-24",
       wrapper: "max-w-7xl mx-auto px-4 text-center",
       mainText: "flex items-center justify-center gap-2 text-xs text-gray-500",
       link: "font-medium text-blue-600 hover:text-blue-700 transition-colors",
@@ -25,7 +25,7 @@ const BMKGFooter = ({
       branding: "text-xs text-gray-300 mt-1"
     },
     compact: {
-      container: "py-2",
+      container: "py-2 mb-24",
       wrapper: "max-w-7xl mx-auto px-2 text-center",
       mainText: "flex items-center justify-center gap-1 text-xs text-gray-500",
       link: "font-medium text-blue-600 hover:text-blue-700 transition-colors underline",
@@ -42,9 +42,9 @@ const BMKGFooter = ({
         <div className={styles.mainText}>
           <div className="flex items-center gap-2">
             <span>Data cuaca dari</span>
-            <a 
-              href="https://www.bmkg.go.id" 
-              target="_blank" 
+            <a
+              href="https://www.bmkg.go.id"
+              target="_blank"
               rel="noopener noreferrer"
               className={styles.link}
               aria-label="Kunjungi website resmi BMKG"
